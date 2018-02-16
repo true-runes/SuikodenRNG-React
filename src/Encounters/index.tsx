@@ -21,7 +21,7 @@ interface State {
 }
 
 function Encounters(areas: AreaClass[], rng: RNG, iterations: number, partyLvl: number): Fight[] {
-  const encounters = [];
+  const encounters: Fight[] = [];
   for (let i = 0; i < iterations; i++) {
     for (const area of areas) {
       if (area.isBattle(rng)) {

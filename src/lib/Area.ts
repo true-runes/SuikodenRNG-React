@@ -1,4 +1,4 @@
-import { Encounter, Enemies, Area } from './interfaces';
+import { Encounter, Enemy, Enemies, Area } from './interfaces';
 import EnemyGroup from './EnemyGroup';
 import Fight from './Fight';
 import { div32ulo } from './lib';
@@ -67,7 +67,7 @@ export default class AreaClass {
   }
 
   private parseEncounterTable(encounters: Encounter[]): EnemyGroup[] {
-    const encounterTable = [];
+    const encounterTable: EnemyGroup[] = [];
     for (let i = 0; i < encounters.length; i++) {
       const name = encounters[i].name;
       const enemies = this.parseEncounter(encounters[i].parseString, this.enemies);
@@ -79,7 +79,7 @@ export default class AreaClass {
 
   private parseEncounter(parseString: string, enemies: object) {
     const encounter = parseString.split(' ');
-    const enemyGroup = [];
+    const enemyGroup: Enemy[] = [];
     for (let j = 0; j < encounter.length; j = j + 2) {
       const name = encounter[j + 1];
       for (let k = 0; k < parseInt(encounter[j], 10); k++) {

@@ -1,4 +1,4 @@
-import { Enemy } from './interfaces';
+import { CalculatedDrop, Enemy } from './interfaces';
 import { div32ulo } from './lib';
 import RNG from './rng';
 
@@ -15,7 +15,7 @@ export default class EnemyGroup {
   }
 
   public calculateDrops(rng: RNG, iterations: number) {
-    const drops = [];
+    const drops: CalculatedDrop[] = [];
     for (let i = 0; i < iterations; i++) {
       const drop = this.calculateDrop(rng);
       drops.push({ rng: rng.getRNG(), drop });

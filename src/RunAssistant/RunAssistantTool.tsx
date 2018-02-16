@@ -1,7 +1,8 @@
 import * as React from 'react';
 import AreaClass from '../lib/Area';
 import RNG from '../lib/rng';
-import { Fight } from '../lib/interfaces';
+import Fight from '../lib/Fight';
+import { Fight as IFight } from '../lib/interfaces';
 import { ConnectedTable as Table } from './Table';
 import ConnectedControls from './Controls';
 import { createStore } from 'redux';
@@ -15,11 +16,11 @@ interface Props {
   partylevel: number;
 }
 
-function genFights(areas: AreaClass[], r: number, iterations: number, partylevel: number): Fight[][] {
+function genFights(areas: AreaClass[], r: number, iterations: number, partylevel: number): IFight[][] {
   const rng: RNG = new RNG(r);
-  const fightsList: Fight[][] = [];
+  const fightsList: IFight[][] = [];
   for (const area of areas) {
-    const fights = [];
+    const fights: Fight[] = [];
     for (let i = 0; i < iterations; i++) {
       if (area.isBattle(rng)) {
         const fight = area.getEncounter(rng);
