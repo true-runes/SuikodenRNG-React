@@ -1,15 +1,15 @@
-export interface Enemy {
+export interface IEnemy {
   bits: string;
-  drops: Drop[];
-  stats: Stats;
+  drops: IDrop[];
+  stats: IStats;
 }
 
-export interface Drop {
+export interface IDrop {
   item: string;
   rate: number;
 }
 
-export interface Stats {
+export interface IStats {
     DEF: number;
     HP: number;
     LUK: number;

@@ -1,11 +1,17 @@
 export interface Fight {
   area: string;
-  enemyGroup: string;
+  enemyGroup: EnemyGroupData;
   startRNG: number;
   battleRNG: number;
   index: number;
   run: boolean;
   wheel: number;
+}
+
+export interface EnemyGroupData {
+  name: string;
+  enemies: Enemy[];
+  champVal: number;
 }
 
 export interface FindRNGStatus {
@@ -14,6 +20,7 @@ export interface FindRNGStatus {
   done: boolean;
   result?: number;
 }
+
 export interface Encounter {
   name: string;
   parseString: string;

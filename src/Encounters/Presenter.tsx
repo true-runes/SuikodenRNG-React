@@ -1,5 +1,5 @@
 import * as React from 'react';
-import VirtTable from '../VirtTable';
+import VirtTable from '../Table';
 
 const Presenter = (props: { encounters: any[]}) => {
   const columns = [

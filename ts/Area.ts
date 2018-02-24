@@ -1,17 +1,34 @@
-import { Encounter, Enemy, Enemies, Fight as FightData, Area } from './interfaces';
+import { IEnemy } from './Enemy';
 import EnemyGroup from './EnemyGroup';
 import Fight from './Fight';
 import { div32ulo } from './lib';
 import RNG from './rng';
 
-export default class AreaClass {
+interface IEncounter {
+  name: string;
+  parseString: string;
+}
+
+interface IArea {
+  name: string;
+  encounterRate: number;
+  encounters: IEncounter[];
+  enemies: IEnemies;
+  areaType: string;
+}
+
+interface IEnemies {
+  [key: string]: IEnemy;
+}
+
+export default class Area {
   public name: string;
   public encounterTable: EnemyGroup[];
   public encounterRate: number;
-  public areaType: string | null;
-  public enemies: Enemies;
+  public areaType: string;
+  public enemies: IEnemies;
 
-  constructor(name: string, area: Area) {
+  constructor(name: string, area: IArea) {
     this.name           = name;
     this.areaType       = area.areaType;
     this.encounterRate  = area.encounterRate;
@@ -20,9 +37,9 @@ export default class AreaClass {
     this.encounterTable = this.parseEncounterTable(area.encounters);
   }
 
-  public getEncounter(rng: RNG): FightData {
+  public getEncounter(rng: RNG): Fight {
     const enemyGroup = this.encounterTable[this.getEncounterIndex(rng)];
-    return Fight(this.name, enemyGroup, rng);
+    return new Fight(enemyGroup, rng, this);
   }
 
   public isBattle(rng: RNG): boolean {
@@ -30,7 +47,7 @@ export default class AreaClass {
       ? this.isBattleDungeon(rng) : this.isBattleWorldMap(rng);
   }
 
-  public getEnemyGroup(name: string): EnemyGroup | null {
+  public getEnemyGroup(name: string): EnemyGroup {
     for (const enemyGroup of this.encounterTable) {
       if (enemyGroup.name === name) {
         return enemyGroup;
@@ -49,7 +66,7 @@ export default class AreaClass {
     return encounterIndex;
   }
 
-  private isBattleWorldMap(rng: RNG): boolean {
+  private isBattleWorldMap(rng): boolean {
     let r2 = rng.getRNG2();
     const r3 = r2;
     r2 = r2 >> 8 << 8;
@@ -66,8 +83,8 @@ export default class AreaClass {
     return r2 < this.encounterRate;
   }
 
-  private parseEncounterTable(encounters: Encounter[]): EnemyGroup[] {
-    const encounterTable: EnemyGroup[] = [];
+  private parseEncounterTable(encounters: IEncounter[]): EnemyGroup[] {
+    const encounterTable = [];
     for (let i = 0; i < encounters.length; i++) {
       const name = encounters[i].name;
       const enemies = this.parseEncounter(encounters[i].parseString, this.enemies);
@@ -79,7 +96,7 @@ export default class AreaClass {
 
   private parseEncounter(parseString: string, enemies: object) {
     const encounter = parseString.split(' ');
-    const enemyGroup: Enemy[] = [];
+    const enemyGroup = [];
     for (let j = 0; j < encounter.length; j = j + 2) {
       const name = encounter[j + 1];
       for (let k = 0; k < parseInt(encounter[j], 10); k++) {

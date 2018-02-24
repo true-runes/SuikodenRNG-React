@@ -1,7 +1,7 @@
 import * as React from 'react';
 import RNG from '../lib/rng';
 import AreaClass from '../lib/Area';
-import Fight from '../lib/Fight';
+import { Fight } from '../lib/interfaces';
 import Presenter from './Presenter';
 import { areaNames, numToHexString } from '../lib/lib';
 import { Container, DropdownProps, Form } from 'semantic-ui-react';
@@ -58,14 +58,13 @@ export default class EncountersContainer extends React.Component<Props, State> {
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Submit called');
     const areas: AreaClass[] = this.state.area.map((name) => {
       return this.props.areas[name];
     });
     const rng: RNG = new RNG(parseInt(this.state.rng));
     const encounters = Encounters(areas, rng, this.state.iterations, this.state.partylevel).map((fight) => {
       return {
-        area: fight.area.name,
+        area: fight.area,
         enemy: fight.enemyGroup.name,
         index: fight.index,
         run: fight.run ? 'Run' : 'Fail',
@@ -91,6 +90,7 @@ export default class EncountersContainer extends React.Component<Props, State> {
           <Form.Input
             label="Iterations"
             name="iterations"
+            step="500"
             type="number"
             value={this.state.iterations}
             onChange={this.handleInputChange}

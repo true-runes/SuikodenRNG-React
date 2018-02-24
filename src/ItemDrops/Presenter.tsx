@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { numToHexString } from '../lib/lib';
-import VirtTable from '../VirtTable';
+import VirtTable from '../Table';
 
 const Presenter = (props: { drops: { index: number, rng: number, drop: string }[] }) => {
   const data = props.drops.map((drop) => {
