@@ -1,5 +1,6 @@
 {
   "name": "suikoden-rng",
+  "homepage": "https://ak505188.github.io/SuikodenRNG-React",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -51,13 +52,16 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/jest": "^22.1.1",
     "@types/node": "^9.4.0",
     "@types/react": "^16.0.36",
     "@types/react-dom": "^16.0.3",
+    "gh-pages": "^1.1.0",
     "typescript": "^2.7.1"
   },
   "jest": {

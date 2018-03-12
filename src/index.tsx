@@ -1,15 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-virtualized/styles.css';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter>
     <App/>
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
