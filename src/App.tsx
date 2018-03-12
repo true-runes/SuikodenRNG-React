@@ -1,9 +1,12 @@
 import * as React from 'react';
 import Navbar from './Navbar';
 import Home from './Home';
-import Sequence from './Sequence';
-import Encounters from './Encounters';
-import ItemDrops from './ItemDrops';
+import EncountersForm from './Encounters';
+import EncounterResult from './Encounters/Result';
+import SequenceForm from './Sequence';
+import SequenceResult from './Sequence/Result';
+import ItemDropsForm from './ItemDrops';
+import ItemDropsResult from './ItemDrops/Result';
 import RNGFinder from './RNGFinder';
 import RunAssistant from './RunAssistant';
 import { enemies } from './lib/enemies';
@@ -23,15 +26,40 @@ class App extends React.Component {
         <Route path="/" component={Home} exact={true}/>
         <Route
           path="/encounters"
+          exact={true}
           render={() => (
-            <Encounters areas={this.state.areas}/>
+            <EncountersForm areas={this.state.areas}/>
           )}
         />
-        <Route path="/sequence" component={Sequence}/>
+        <Route
+          path="/encounters/result"
+          exact={true}
+          render={() => (
+            <EncounterResult areas={this.state.areas}/>
+          )}
+        />
+        <Route
+          path="/sequence"
+          exact={true}
+          component={SequenceForm}
+        />
+        <Route
+          path="/sequence/result"
+          exact={true}
+          component={SequenceResult}
+        />
         <Route
           path="/drops"
+          exact={true}
           render={() => (
-            <ItemDrops areas={this.state.areas}/>
+            <ItemDropsForm areas={this.state.areas}/>
+          )}
+        />
+        <Route
+          path="/drops/result"
+          exact={true}
+          render={() => (
+            <ItemDropsResult areas={this.state.areas}/>
           )}
         />
         <Route

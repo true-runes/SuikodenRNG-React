@@ -1,12 +1,10 @@
 import * as React from 'react';
-import RNG from '../lib/rng';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AreaClass from '../lib/Area';
-import Presenter from './Presenter';
 import { areaNames, numToHexString } from '../lib/lib';
 import { Container, DropdownProps, Form } from 'semantic-ui-react';
-import 'react-virtualized/styles.css';
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
   areas: {
     [key: string]: AreaClass
   };
@@ -17,16 +15,14 @@ interface State {
   iterations: number;
   area: string;
   enemyGroup: number;
-  drops: { index: number, rng: number, drop: string}[];
 }
 
-export default class EncountersContainer extends React.Component<Props, State> {
+class ItemDropsForm extends React.Component<Props, State> {
   state = {
     rng: numToHexString(0x12),
     iterations: 1000,
     area: 'Cave of the Past',
     enemyGroup: 0,
-    drops: []
   };
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -46,17 +42,11 @@ export default class EncountersContainer extends React.Component<Props, State> {
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const area = this.props.areas[this.state.area];
-    const rng: RNG = new RNG(parseInt(this.state.rng));
-    const group = area.encounterTable[this.state.enemyGroup];
-    const drops = group.calculateDrops(rng, this.state.iterations).map((drop, index) => {
-      return {
-        drop: drop.drop,
-        index,
-        rng: drop.rng
-      };
+    const params: URLSearchParams = new URLSearchParams();
+    Object.keys(this.state).forEach((key) => {
+      params.append(key, this.state[key]);
     });
-    this.setState({ drops });
+    this.props.history.push(`/drops/result?${params.toString()}`);
   }
 
   render() {
@@ -99,10 +89,9 @@ export default class EncountersContainer extends React.Component<Props, State> {
           />
           <Form.Button type="submit" content="Calculate Drops" primary={true}/>
         </Form>
-        {this.state.drops.length > 0 &&
-          <Presenter drops={this.state.drops}/>
-        }
       </Container>
     );
   }
 }
+
+export default withRouter(ItemDropsForm);

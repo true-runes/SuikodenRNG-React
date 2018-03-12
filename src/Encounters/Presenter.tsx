@@ -11,7 +11,7 @@ const Presenter = (props: { encounters: any[]}) => {
     { label: 'Battle RNG', key: 'battleRNG', width: 150 },
     { label: 'Wheel Attempts', key: 'wheel', width: 150 }
   ];
-  return <VirtTable data={props.encounters} columns={columns}/>;
+  return <VirtTable columns={columns} data={props.encounters}/>;
 };
 
 export default Presenter;

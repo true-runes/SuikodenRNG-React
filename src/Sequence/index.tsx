@@ -1,20 +1,17 @@
 import * as React from 'react';
-import RNG from '../lib/rng';
 import { numToHexString } from '../lib/lib';
-import Presenter from './Presenter';
 import { Container, Form } from 'semantic-ui-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface State {
-  start: string;
+  rng: string;
   iterations: number;
-  sequence: string[];
 }
 
-export default class SequenceContainer extends React.Component<{}, State> {
+class SequenceForm extends React.Component<RouteComponentProps<any>, State> {
   state = {
-    start: numToHexString(0x12),
+    rng: numToHexString(0x12),
     iterations: 1000,
-    sequence: []
   };
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -26,13 +23,11 @@ export default class SequenceContainer extends React.Component<{}, State> {
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const rng: RNG = new RNG(parseInt(this.state.start));
-    const sequence: string[] = [];
-    for (let i = 0; i < this.state.iterations; i++) {
-      sequence.push(numToHexString(rng.getRNG()));
-      rng.next();
-    }
-    this.setState({ sequence });
+    const params: URLSearchParams = new URLSearchParams();
+    Object.keys(this.state).forEach((key) => {
+      params.append(key, this.state[key]);
+    });
+    this.props.history.push(`/sequence/result?${params.toString()}`);
   }
 
   render() {
@@ -41,9 +36,9 @@ export default class SequenceContainer extends React.Component<{}, State> {
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             label="Initial RNG Value"
-            name="start"
+            name="rng"
             type="text"
-            value={this.state.start}
+            value={this.state.rng}
             onChange={this.handleInputChange}
           />
           <Form.Input
@@ -55,8 +50,9 @@ export default class SequenceContainer extends React.Component<{}, State> {
           />
           <Form.Button type="submit" content="Calculate Sequence" primary={true}/>
         </Form>
-      {this.state.sequence.length > 0 && <Presenter sequence={this.state.sequence}/>}
       </Container>
     );
   }
 }
+
+export default withRouter(SequenceForm);

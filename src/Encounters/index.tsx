@@ -1,12 +1,10 @@
 import * as React from 'react';
-import RNG from '../lib/rng';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AreaClass from '../lib/Area';
-import { Fight } from '../lib/interfaces';
-import Presenter from './Presenter';
 import { areaNames, numToHexString } from '../lib/lib';
 import { Container, DropdownProps, Form } from 'semantic-ui-react';
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
   areas: {
     [key: string]: AreaClass
   };
@@ -16,33 +14,15 @@ interface State {
   rng: string;
   iterations: number;
   partylevel: number;
-  area: string | string[];
-  encounters: any[];
+  areas: string | string[];
 }
 
-function Encounters(areas: AreaClass[], rng: RNG, iterations: number, partyLvl: number): Fight[] {
-  const encounters: Fight[] = [];
-  for (let i = 0; i < iterations; i++) {
-    for (const area of areas) {
-      if (area.isBattle(rng)) {
-        const fight = area.getEncounter(rng);
-        if (!(partyLvl > 0 && partyLvl > fight.enemyGroup.champVal)) {
-          encounters.push(fight);
-        }
-      }
-    }
-    rng.next();
-  }
-  return encounters;
-}
-
-export default class EncountersContainer extends React.Component<Props, State> {
+class EncountersContainer extends React.Component<Props, State> {
   state = {
     rng: numToHexString(0x12),
     iterations: 1000,
     partylevel: 0,
-    area: ['Cave of the Past'],
-    encounters: []
+    areas: ['Cave of the Past'],
   };
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -53,27 +33,16 @@ export default class EncountersContainer extends React.Component<Props, State> {
   }
 
   handleAreaChange = (e: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-    this.setState({ area: data.value as string[] });
+    this.setState({ areas: data.value as string[] });
   }
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const areas: AreaClass[] = this.state.area.map((name) => {
-      return this.props.areas[name];
+    const params: URLSearchParams = new URLSearchParams();
+    Object.keys(this.state).forEach((key) => {
+      params.append(key, this.state[key]);
     });
-    const rng: RNG = new RNG(parseInt(this.state.rng));
-    const encounters = Encounters(areas, rng, this.state.iterations, this.state.partylevel).map((fight) => {
-      return {
-        area: fight.area,
-        enemy: fight.enemyGroup.name,
-        index: fight.index,
-        run: fight.run ? 'Run' : 'Fail',
-        startRNG: numToHexString(fight.startRNG),
-        battleRNG: numToHexString(fight.battleRNG),
-        wheel: fight.wheel
-      };
-    });
-    this.setState({ encounters });
+    this.props.history.push(`/encounters/result?${params.toString()}`);
   }
 
   render() {
@@ -106,7 +75,7 @@ export default class EncountersContainer extends React.Component<Props, State> {
             label="Areas"
             placeholder="Area"
             options={areaNames.map((name) => { return { key: name, value: name, text: name }; })}
-            value={this.state.area}
+            value={this.state.areas}
             onChange={this.handleAreaChange}
             multiple={true}
             search={true}
@@ -114,10 +83,9 @@ export default class EncountersContainer extends React.Component<Props, State> {
           />
           <Form.Button type="submit" content="Generate Encounters" primary={true}/>
         </Form>
-        {this.state.encounters.length > 0 &&
-          <Presenter encounters={this.state.encounters}/>
-        }
       </Container>
     );
   }
 }
+
+export default withRouter(EncountersContainer);

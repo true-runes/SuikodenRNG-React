@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { AutoSizer, Column as VirtColumn, Table } from 'react-virtualized';
 import { Column } from '../interfaces/Table';
 import { Container } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -7,6 +6,7 @@ import { RunAssistState } from './interfaces';
 import { Fight } from '../lib/interfaces';
 import { numToHexString } from '../lib/lib';
 import { selectFight } from './actions';
+import VirtTable from '../Table';
 
 interface Props {
   fights: Fight[];
@@ -45,34 +45,14 @@ const RunAssistantTable = (props: Props) => {
   }));
 
   return (
-    <div style={{ flex: 1}}>
       <Container textAlign="center" style={{ display: 'block', height: '100%' }}>
-        <AutoSizer>
-          {({ height, width }) => (
-            <Table
-              headerHeight={30}
-              height={height}
-              onRowClick={({index}) => props.selectFight(index)}
-              rowCount={fights.length}
-              rowGetter={({ index }) => fights[index]}
-              rowHeight={30}
-              width={width}
-            >
-              {columns.map((column: Column) => {
-                return (
-                  <VirtColumn
-                    key={column.key}
-                    label={column.label}
-                    dataKey={column.key}
-                    width={column.width}
-                  />
-                );
-              })}
-            </Table>
-          )}
-        </AutoSizer>
+        <VirtTable
+          currentRow={props.currentRow}
+          columns={columns}
+          data={fights}
+          onRowClick={(index: number) => props.selectFight(index)}
+        />
       </Container>
-    </div>
   );
 };
 

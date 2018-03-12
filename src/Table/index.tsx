@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { AutoSizer, TableProps } from 'react-virtualized';
+import { AutoSizer } from 'react-virtualized';
 import { Column } from '../interfaces/Table';
 import Table from './Table';
 import Filter from './Filter';
 import ColumnDropdown from './ColumnDropdown';
+import reducer from './reducers';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import reducer from './reducers';
 import { Container } from 'semantic-ui-react';
 
 interface Props {
   data: {}[];
   columns: Column[];
   currentRow?: number;
-  onRowClick?: TableProps['onRowClick'];
+  onRowClick?: (index: number) => any;
 }
 
 export default class TableContainer extends React.Component<Props, { store: any, rowsToRender?: number[] }> {
@@ -38,7 +38,7 @@ export default class TableContainer extends React.Component<Props, { store: any,
         <AutoSizer>
           {({ height, width }) => (
             <Container>
-              <div style={{ display: 'flex', 'justifyContent': 'space-between', width }}>
+              <div style={{ display: 'flex', 'justifyContent': 'space-between', width, height: 38 }}>
                 <Filter
                   data={this.props.data}
                   setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
@@ -48,7 +48,7 @@ export default class TableContainer extends React.Component<Props, { store: any,
               <Table
                 {...this.props}
                 data={data}
-                height={height}
+                height={height - 38}
                 width={width}
               />
             </Container>

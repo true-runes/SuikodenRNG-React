@@ -8,6 +8,8 @@ interface Props {
   columns: Column[];
   height: number;
   width: number;
+  currentRow?: number;
+  onRowClick?: (index: number) => any;
 }
 
 const mapStateToProps = (state: { columns: Column[] }) => {
@@ -21,9 +23,17 @@ const Table = (props: Props) => {
     <VirtTable
       headerHeight={30}
       height={props.height}
+      onRowClick={({ index }) => {
+        if (props.onRowClick) {
+          props.onRowClick(index);
+        }
+      }}
       rowCount={props.data.length}
       rowGetter={({ index }) => props.data[index]}
       rowHeight={30}
+      rowStyle={({ index }) => (props.currentRow !== undefined && props.currentRow === index
+        ? { backgroundColor: 'yellow' }
+        : {})}
       width={props.width}
     >
       {props.columns.reduce(
