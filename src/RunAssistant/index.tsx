@@ -63,6 +63,7 @@ class RunAssistantForm extends React.Component<Props, State> {
             label="Iterations"
             name="iterations"
             type="number"
+            step={500}
             value={this.state.iterations}
             onChange={this.handleInputChange}
           />

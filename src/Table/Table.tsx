@@ -34,6 +34,8 @@ const Table = (props: Props) => {
       rowStyle={({ index }) => (props.currentRow !== undefined && props.currentRow === index
         ? { backgroundColor: 'yellow' }
         : {})}
+      scrollToIndex={props.currentRow}
+      scrollToAlignment="start"
       width={props.width}
     >
       {props.columns.reduce(

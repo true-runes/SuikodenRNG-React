@@ -1,4 +1,4 @@
-import { Fight } from '../../lib/interfaces';
+import { EnemyGroupData, Fight } from '../../lib/interfaces';
 import { RunAssistState as State } from '../interfaces';
 import { handleActions } from 'redux-actions';
 
@@ -43,17 +43,17 @@ export default handleActions(
         return {
           ...state,
           fightIndex: state.fightIndex - 1,
-          rngIndex: getCurrentFights(state)[state.fightIndex - 1].battleRNG
+          rngIndex: getCurrentFights(state)[state.fightIndex - 1].index
         };
       }
       return state;
     },
     NEXT_FIGHT: (state, action) => {
-      if (state.fightIndex < state.fightsList.length - 1) {
+      if (state.fightIndex < getCurrentFights(state).length - 1) {
         return {
           ...state,
           fightIndex: state.fightIndex + 1,
-          rngIndex: getCurrentFights(state)[state.fightIndex + 1].battleRNG
+          rngIndex: getCurrentFights(state)[state.fightIndex + 1].index
         };
       }
       return state;
@@ -63,20 +63,18 @@ export default handleActions(
         return {
           ...state,
           fightIndex: action.index,
-          rngIndex: getCurrentFights(state)[action.index].battleRNG
+          rngIndex: getCurrentFights(state)[action.index].index
         };
       }
       return state;
     },
     FIND_FIGHT: (state, action) => {
-      let fightIndex = getCurrentFights(state).findIndex((fight, index) => {
-        return (fight.enemyGroup.name === action.name && index > state.fightIndex);
-      });
+      let fightIndex = findNextFight(state, action.name);
       fightIndex = fightIndex !== -1 ? fightIndex : state.fightIndex;
       return {
         ...state,
         fightIndex,
-        rngIndex: getCurrentFights(state)[fightIndex].battleRNG
+        rngIndex: getCurrentFights(state)[fightIndex].index
       };
     },
     JUMP_RNG: (state, action) => {
@@ -92,6 +90,21 @@ export default handleActions(
   },
   initialState);
 
+export function getCurrentArea(state: State): { name: string, enemies: EnemyGroupData[] } {
+  return state.areas[state.currentArea];
+}
+
+export function getCurrentEnemies(state: State): EnemyGroupData[] {
+  return getCurrentArea(state).enemies;
+}
+
 export function getCurrentFights(state: State): Fight[] {
   return state.fightsList[state.currentArea];
+}
+
+// Returns fightIndex of next fight with enemyGroup
+export function findNextFight(state: State, enemyGroup: string): number {
+  return getCurrentFights(state).findIndex((fight, index) => {
+    return (fight.enemyGroup.name === enemyGroup && index > state.fightIndex);
+  });
 }

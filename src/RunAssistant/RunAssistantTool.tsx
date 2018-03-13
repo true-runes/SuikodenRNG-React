@@ -31,7 +31,10 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       areas: areas.map((area: AreaClass) => {
         return {
           name: area.name,
-          enemies: area.encounterTable.map((group) => { return group.name; })
+          enemies: area.encounterTable.map((group) => {
+            const { name, enemies, champVal } = group;
+            return { name, enemies, champVal };
+          })
         };
       }),
       fightsList,
