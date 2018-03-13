@@ -16,6 +16,11 @@ export const selectFight = (index: number) => ({
   index
 });
 
+export const findFight = (name: string) => ({
+  type: 'FIND_FIGHT',
+  name
+});
+
 export const jumpRNG = (jump: number) => ({
   type: 'JUMP_RNG',
   jump

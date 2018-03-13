@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AreaClass from '../lib/Area';
 import RNG from '../lib/rng';
 import { Fight } from '../lib/interfaces';
@@ -8,37 +9,23 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
 
-interface Props {
-  areas: AreaClass[];
-  rng: number;
-  iterations: number;
-  partylevel: number;
+interface Props extends RouteComponentProps<any> {
+  areas: {
+    [key: string]: AreaClass
+  };
 }
 
-function genFights(areas: AreaClass[], r: number, iterations: number, partylevel: number): Fight[][] {
-  const rng: RNG = new RNG(r);
-  const fightsList: Fight[][] = [];
-  for (const area of areas) {
-    const fights: Fight[] = [];
-    for (let i = 0; i < iterations; i++) {
-      if (area.isBattle(rng)) {
-        const fight = area.getEncounter(rng);
-        if (!(partylevel > 0 && partylevel > fight.enemyGroup.champVal)) {
-          fights.push(fight);
-        }
-      }
-      rng.next();
-    }
-    fightsList.push(fights);
-    rng.reset();
-  }
-  return fightsList;
-}
-
-export default class RunAssistantTool extends React.Component<Props, { store: any }> {
+class RunAssistantTool extends React.Component<Props, { store: any }> {
   constructor(props: Props) {
     super(props);
-    const { areas, rng, iterations, partylevel } = props;
+    const params: URLSearchParams = new URLSearchParams(this.props.location.search);
+    const rng: number = parseInt(params.get('rng') as string);
+    const iterations: number = parseInt(params.get('iterations') as string);
+    const partylevel: number = parseInt(params.get('partylevel') as string);
+    const areas: AreaClass[] = params.get('areas')!.split(',').map((name) => {
+      return this.props.areas[name];
+    });
+    const fightsList: Fight[][] = areas.map(area => area.generateEncounters(new RNG(rng), iterations, partylevel));
     const initialState = {
       currentArea: 0,
       areas: areas.map((area: AreaClass) => {
@@ -47,7 +34,7 @@ export default class RunAssistantTool extends React.Component<Props, { store: an
           enemies: area.encounterTable.map((group) => { return group.name; })
         };
       }),
-      fightsList: genFights(areas, rng, iterations, partylevel),
+      fightsList,
       fightIndex: 0,
       rngIndex: 0
     };
@@ -65,3 +52,5 @@ export default class RunAssistantTool extends React.Component<Props, { store: an
     );
   }
 }
+
+export default withRouter(RunAssistantTool);

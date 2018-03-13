@@ -8,7 +8,8 @@ import SequenceResult from './Sequence/Result';
 import ItemDropsForm from './ItemDrops';
 import ItemDropsResult from './ItemDrops/Result';
 import RNGFinder from './RNGFinder';
-import RunAssistant from './RunAssistant';
+import RunAssistantForm from './RunAssistant';
+import RunAssistantResult from './RunAssistant/RunAssistantTool';
 import { enemies } from './lib/enemies';
 import { initAreas } from './lib/lib';
 import { Route } from 'react-router-dom';
@@ -70,8 +71,16 @@ class App extends React.Component {
         />
         <Route
           path="/runassist"
+          exact={true}
           render={() => (
-            <RunAssistant areas={this.state.areas}/>
+            <RunAssistantForm areas={this.state.areas}/>
+          )}
+        />
+        <Route
+          path="/runassist/result"
+          exact={true}
+          render={() => (
+            <RunAssistantResult areas={this.state.areas}/>
           )}
         />
       </div>

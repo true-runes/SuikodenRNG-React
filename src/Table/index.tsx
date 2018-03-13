@@ -28,6 +28,12 @@ export default class TableContainer extends React.Component<Props, { store: any,
     };
   }
 
+  componentWillReceiveProps(prevProps: Props) {
+    if (prevProps.data !== this.props.data) {
+      this.setState({ rowsToRender: undefined });
+    }
+  }
+
   render() {
     const data = this.state.rowsToRender ? (this.state.rowsToRender as number[]).map((rowIndex) => {
       return this.props.data[rowIndex];

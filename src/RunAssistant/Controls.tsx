@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Dropdown, DropdownProps } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { jumpRNG, nextFight, previousFight, switchArea } from './actions';
+import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
 import { RunAssistState } from './interfaces';
 
 const mapStateToProps = (state: RunAssistState) => {
@@ -16,6 +16,7 @@ const mapDispatchToProps = {
   jumpRNG,
   nextFight,
   previousFight,
+  findFight,
   switchArea
 };
 
@@ -26,6 +27,7 @@ interface Props {
   jumpRNG: (jump: number) => any;
   nextFight: () => any;
   previousFight: () => any;
+  findFight: (name: string) => any;
   switchArea: (area: string) => any;
 }
 
@@ -41,14 +43,19 @@ const Controls = (props: Props) => {
         onChange={(e: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
           props.switchArea(data.value as string);
         }}
-        open={true}
         selection={true}
       />
       {areas.map((area) => {
         return <Button key={area} content={area} onClick={() => props.switchArea(area)}/>;
       })}
       {enemies.map((enemy) => {
-        return <Button key={enemy} content={enemy}/>;
+        return (
+          <Button
+            key={enemy}
+            content={enemy}
+            onClick={() => props.findFight(enemy)}
+          />
+        );
       })}
       <Button content="+100" onClick={() => props.jumpRNG(100)}/>
       <Button content="+500" onClick={() => props.jumpRNG(500)}/>

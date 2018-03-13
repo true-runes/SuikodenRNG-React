@@ -6,6 +6,7 @@ import { RunAssistState } from './interfaces';
 import { Fight } from '../lib/interfaces';
 import { numToHexString } from '../lib/lib';
 import { selectFight } from './actions';
+import { getCurrentFights } from './reducers';
 import VirtTable from '../Table';
 
 interface Props {
@@ -16,7 +17,7 @@ interface Props {
 
 const mapStateToProps = (state: RunAssistState) => {
   return {
-    fights: state.fightsList[state.currentArea],
+    fights: getCurrentFights(state),
     currentRow: state.fightIndex
   };
 };
@@ -45,14 +46,14 @@ const RunAssistantTable = (props: Props) => {
   }));
 
   return (
-      <Container textAlign="center" style={{ display: 'block', height: '100%' }}>
-        <VirtTable
-          currentRow={props.currentRow}
-          columns={columns}
-          data={fights}
-          onRowClick={(index: number) => props.selectFight(index)}
-        />
-      </Container>
+    <Container textAlign="center" style={{ display: 'block', height: '100%' }}>
+      <VirtTable
+        currentRow={props.currentRow}
+        columns={columns}
+        data={fights}
+        onRowClick={(index: number) => props.selectFight(index)}
+      />
+    </Container>
   );
 };
 

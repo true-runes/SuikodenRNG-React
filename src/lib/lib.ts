@@ -98,3 +98,17 @@ export const areaNames = [
   'Soniere Prison',
   'Toran Lake Castle'
 ];
+
+// Params has to be a URLSearchParams object.
+// There's a typescript bug where URLSearchParams.keys() does not exist
+// So we use any to get it to compile :(
+/* keys() doesn't seem to work so we're just commenting this thing out
+export function paramsToObject(params: any): { [key: string]: string } {
+  const paramsObject = {};
+  console.log(params);
+  for (const key of params.keys()) {
+    paramsObject[key] = params.getAll(key);
+  }
+  return paramsObject;
+}
+*/

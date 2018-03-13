@@ -31,6 +31,7 @@
     "react-router-dom": "^4.2.2",
     "react-virtualized": "^9.18.5",
     "redux": "^3.7.2",
+    "redux-actions": "^2.3.0",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.77.2",
     "source-map-loader": "^0.2.1",

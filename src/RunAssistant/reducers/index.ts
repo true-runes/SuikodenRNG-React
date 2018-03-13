@@ -1,7 +1,8 @@
 import { Fight } from '../../lib/interfaces';
-import { RunAssistState } from '../interfaces';
+import { RunAssistState as State } from '../interfaces';
+import { handleActions } from 'redux-actions';
 
-const defaultState: RunAssistState = {
+const initialState: State = {
   currentArea: 0,
   areas: [],
   fightsList: [],
@@ -27,54 +28,70 @@ function calcRNGIndexJump(current: number, jump: number, last: number): number {
   return current + jump;
 }
 
-const reducer = (state: RunAssistState = defaultState, action: any) => {
-  const { currentArea, areas } = state;
-  const fights: Fight[] = state.fightsList[currentArea];
-  let { fightIndex, rngIndex } = state;
-
-  switch (action.type) {
-    case 'SWITCH_AREA':
+export default handleActions(
+  {
+    SWITCH_AREA: (state: State, action) => {
       // TODO: Modify fightIndex to adjust for area change
-      const index: number = areas.map((area) => { return area.name; }).indexOf(action.area);
+      const index: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
       return {
         ...state,
-        currentArea: index !== -1 ? index : currentArea
+        currentArea: index !== -1 ? index : state.currentArea
       };
-    case 'PREVIOUS_FIGHT':
-      if (fightIndex !== 0) {
+    },
+    PREVIOUS_FIGHT: (state: State, action) => {
+      if (state.fightIndex !== 0) {
         return {
           ...state,
-          fightIndex: fightIndex - 1,
-          rngIndex: fights[fightIndex - 1].battleRNG
+          fightIndex: state.fightIndex - 1,
+          rngIndex: getCurrentFights(state)[state.fightIndex - 1].battleRNG
         };
       }
       return state;
-    case 'NEXT_FIGHT':
-      if (fightIndex < fights.length - 1) {
+    },
+    NEXT_FIGHT: (state, action) => {
+      if (state.fightIndex < state.fightsList.length - 1) {
         return {
           ...state,
-          fightIndex: fightIndex + 1,
-          rngIndex: fights[fightIndex + 1].battleRNG
+          fightIndex: state.fightIndex + 1,
+          rngIndex: getCurrentFights(state)[state.fightIndex + 1].battleRNG
         };
       }
       return state;
-    case 'SELECT_FIGHT':
+    },
+    SELECT_FIGHT: (state, action) => {
+      if (action.index < getCurrentFights(state).length - 1) {
+        return {
+          ...state,
+          fightIndex: action.index,
+          rngIndex: getCurrentFights(state)[action.index].battleRNG
+        };
+      }
+      return state;
+    },
+    FIND_FIGHT: (state, action) => {
+      let fightIndex = getCurrentFights(state).findIndex((fight, index) => {
+        return (fight.enemyGroup.name === action.name && index > state.fightIndex);
+      });
+      fightIndex = fightIndex !== -1 ? fightIndex : state.fightIndex;
       return {
         ...state,
-        fightIndex: action.index,
-        rngIndex: fights[action.index].battleRNG
+        fightIndex,
+        rngIndex: getCurrentFights(state)[fightIndex].battleRNG
       };
-    case 'JUMP_RNG':
-      rngIndex = calcRNGIndexJump(state.rngIndex, action.jump, fights[fights.length - 1].index);
-      fightIndex = calcFightIndexAfterRNGChange(fights, rngIndex);
+    },
+    JUMP_RNG: (state, action) => {
+      const fights: Fight[] = getCurrentFights(state);
+      const rngIndex = calcRNGIndexJump(state.rngIndex, action.jump, fights[fights.length - 1].index);
+      const fightIndex = calcFightIndexAfterRNGChange(fights, rngIndex);
       return {
         ...state,
         rngIndex,
         fightIndex
       };
-    default:
-      return state;
-  }
-};
+    }
+  },
+  initialState);
 
-export default reducer;
+export function getCurrentFights(state: State): Fight[] {
+  return state.fightsList[state.currentArea];
+}

@@ -49,6 +49,20 @@ export default class AreaClass {
     return encounterIndex;
   }
 
+  public generateEncounters(rng: RNG, iterations: number, partylevel: number): FightData[] {
+    const encounters: FightData[] = [];
+    for (let i = 0; i < iterations; i++) {
+      if (this.isBattle(rng)) {
+        const fight = this.getEncounter(rng);
+        if (!(partylevel > 0 && partylevel > fight.enemyGroup.champVal)) {
+          encounters.push(fight);
+        }
+      }
+      rng.next();
+    }
+    return encounters;
+  }
+
   private isBattleWorldMap(rng: RNG): boolean {
     let r2 = rng.getRNG2();
     const r3 = r2;
@@ -90,4 +104,5 @@ export default class AreaClass {
     }
     return enemyGroup;
   }
+
 }
