@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { Provider } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Divider } from 'semantic-ui-react';
 import AreaClass from '../lib/Area';
 import RNG from '../lib/rng';
 import { Fight } from '../lib/interfaces';
 import { ConnectedTable as Table } from './Table';
 import ConnectedControls from './Controls';
 import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 import reducer from './reducers';
 
 interface Props extends RouteComponentProps<any> {
@@ -49,6 +50,7 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       <Provider store={this.state.store}>
         <React.Fragment>
           <ConnectedControls/>
+          <Divider hidden={true}/>
           <Table/>
         </React.Fragment>
       </Provider>

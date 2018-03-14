@@ -31,11 +31,25 @@ function calcRNGIndexJump(current: number, jump: number, last: number): number {
 export default handleActions(
   {
     SWITCH_AREA: (state: State, action) => {
-      // TODO: Modify fightIndex to adjust for area change
-      const index: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
+      const currentArea: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
+      if (currentArea === -1) {
+        return state;
+      }
+
+      let fightIndex = state.fightIndex;
+      // Decrement fightIndex until rng is lower than current
+      while (state.fightsList[currentArea][fightIndex].index > state.rngIndex) {
+        fightIndex--;
+      }
+
+      // Then increment fightIndex until rng is 1 higher than current
+      while (state.fightsList[currentArea][fightIndex].index < state.rngIndex) {
+        fightIndex++;
+      }
       return {
         ...state,
-        currentArea: index !== -1 ? index : state.currentArea
+        currentArea,
+        fightIndex
       };
     },
     PREVIOUS_FIGHT: (state: State, action) => {
@@ -69,7 +83,7 @@ export default handleActions(
       return state;
     },
     FIND_FIGHT: (state, action) => {
-      let fightIndex = findNextFight(state, action.name);
+      let fightIndex = findFight(state, action.name);
       fightIndex = fightIndex !== -1 ? fightIndex : state.fightIndex;
       return {
         ...state,
@@ -98,13 +112,27 @@ export function getCurrentEnemies(state: State): EnemyGroupData[] {
   return getCurrentArea(state).enemies;
 }
 
+export function getCurrentFight(state: State): Fight {
+  return state.fightsList[state.currentArea][state.fightIndex];
+}
+
 export function getCurrentFights(state: State): Fight[] {
   return state.fightsList[state.currentArea];
 }
 
-// Returns fightIndex of next fight with enemyGroup
-export function findNextFight(state: State, enemyGroup: string): number {
+export function getFight(state: State, index: number): Fight {
+  return getCurrentFights(state)[index];
+}
+
+// Returns fightIndex of next fight of an enemy group
+export function findFight(state: State, enemyGroup: string): number {
   return getCurrentFights(state).findIndex((fight, index) => {
     return (fight.enemyGroup.name === enemyGroup && index > state.fightIndex);
   });
+}
+
+// Returns fightIndex of next fight with current enemyGroup
+export function findNextFight(state: State): number {
+  const name: string = getCurrentFight(state).enemyGroup.name;
+  return findFight(state, name);
 }

@@ -55,6 +55,15 @@ const Home = () => {
           Tool to assist in implementing RNG manipulation strategies while speedrunning.
         </p>
       </Segment>
+      <Segment>
+        <Header>
+          <a href="https://github.com/ak505188/SuikodenRNG-React/tree/master">Github Repository</a>
+        </Header>
+        <p>
+          This webapp's Github repository. README details how the game calculates
+          most things RNG related.
+        </p>
+      </Segment>
     </Container>
   );
 };

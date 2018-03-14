@@ -24,8 +24,8 @@ top of my head.
     * Also advances during certain menus
       1. Viki's Teleportation menu
       2. Sanchez/Mathiu's Party Menus
-  4. Every frame during Chinchironin (Fuck Tai Ho!)
-    * Currently assumption is once per frame. Not tested at all though.
+  4. Every frame during Chinchironin (#FuckTaiHo)
+    * Current assumption is once per frame. Not tested at all though.
   5. During War Battles
     * RNG Advanced depends on action. Each action advances RNG by a different
       amount. That amount always seems to be at least several hundred though.

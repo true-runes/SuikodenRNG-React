@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Container } from 'semantic-ui-react';
+import { Button, Container, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { findFight } from './actions';
 import { getCurrentEnemies } from './reducers';
@@ -53,29 +53,31 @@ const EnemyButtonContainer = (props: Props) => {
 
   return (
     <Container style={{ width: '100%' }}>
-      <EvenColumnDiv
-        columns={enemiesGroupedByEnemyCount.length}
-      >
-        {enemiesGroupedByEnemyCount.map((enemiesGroup, index) => {
-          return (
-            <Button.Group
-              vertical={true}
-              key={index}
-            >
-              {enemiesGroup.map((enemy) => {
-                return (
-                  <Button
-                    key={enemy.name}
-                    style={{ width: '100%' }}
-                    content={enemy.name}
-                    onClick={() => props.findFight(enemy.name)}
-                  />
-                );
-              })}
-            </Button.Group>
-          );
-        })}
-      </EvenColumnDiv>
+      <Segment>
+        <EvenColumnDiv
+          columns={enemiesGroupedByEnemyCount.length}
+        >
+          {enemiesGroupedByEnemyCount.map((enemiesGroup, index) => {
+            return (
+              <Button.Group
+                vertical={true}
+                key={index}
+              >
+                {enemiesGroup.map((enemy) => {
+                  return (
+                    <Button
+                      key={enemy.name}
+                      style={{ width: '100%' }}
+                      content={enemy.name}
+                      onClick={() => props.findFight(enemy.name)}
+                    />
+                  );
+                })}
+              </Button.Group>
+            );
+          })}
+        </EvenColumnDiv>
+      </Segment>
     </Container>
   );
 };

@@ -1,15 +1,21 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Button, Container, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
 import EnemyButtonContainer from './EnemyButtons';
-import { connect } from 'react-redux';
-import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
-import { getCurrentArea } from './reducers';
 import { RunAssistState } from './interfaces';
+import { Fight } from '../lib/interfaces';
+import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
+import { findNextFight, getCurrentArea, getCurrentFight, getFight } from './reducers';
 
 const mapStateToProps = (state: RunAssistState) => {
   return {
     areas: state.areas.map((area: any) => area.name),
-    currentArea: getCurrentArea(state).name
+    currentArea: getCurrentArea(state).name,
+    findNextFight: () => {
+      const index: number = findNextFight(state);
+      return index > -1 ? getFight(state, index) : null;
+    },
+    getCurrentFight: () => getCurrentFight(state)
   };
 };
 
@@ -24,15 +30,25 @@ const mapDispatchToProps = {
 interface Props {
   areas: string[];
   currentArea: string;
+  findNextFight: () => Fight | null;
+  getCurrentFight: () => Fight;
   jumpRNG: (jump: number) => any;
   nextFight: () => any;
   previousFight: () => any;
-  findFight: (name: string) => any;
   switchArea: (area: string) => any;
 }
 
+const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFight: Fight): string => {
+  if (nextFightWithSameGroup === null) {
+    return `No more fights with ${currentFight.enemyGroup.name} left.`;
+  }
+  return `
+    Next Fight with ${nextFightWithSameGroup.enemyGroup.name} in ${nextFightWithSameGroup.index - currentFight.index}.
+  `;
+};
+
 const Controls = (props: Props) => {
-  const { areas } = props;
+  const { areas, currentArea } = props;
   return (
     <Container>
       <EnemyButtonContainer/>
@@ -40,7 +56,7 @@ const Controls = (props: Props) => {
         <Dropdown
           label="Areas"
           placeholder="Area"
-          value={props.currentArea}
+          value={currentArea}
           options={areas.map((name) => { return { key: name, value: name, text: name }; })}
           onChange={(e: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
             props.switchArea(data.value as string);
@@ -48,6 +64,9 @@ const Controls = (props: Props) => {
           selection={true}
         />
         <span style={{ alignItems: 'flex-end' }}>
+          <span>
+            {generateNextFightInfo(props.findNextFight(), props.getCurrentFight())}
+          </span>
           <Button content="+100" onClick={() => props.jumpRNG(100)}/>
           <Button content="+500" onClick={() => props.jumpRNG(500)}/>
           <Button content="+1000" onClick={() => props.jumpRNG(1000)}/>

@@ -22,7 +22,6 @@ const Navbar = () => {
             key={index}
             name={route.name}
             to={route.path}
-
           />
         );
       })}
