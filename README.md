@@ -1,6 +1,6 @@
 ## Suikoden RNG Generator
 This is a RNG calculator for the PS1 game Suikoden. It can predict RNG based
-events, such as future encounters and enemy drops(coming later).
+events, such as future encounters, enemy drops, and finding your RNG Seed.
 
 ## Known Mechanics
 This is all pseudocode. There is actual code in the repo.
