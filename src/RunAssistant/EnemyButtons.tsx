@@ -50,14 +50,18 @@ const EnemyButtonContainer = (props: Props) => {
         return arr;
       },
       []);
+
   return (
-    <Container>
+    <Container style={{ width: '100%' }}>
       <EvenColumnDiv
         columns={enemiesGroupedByEnemyCount.length}
       >
         {enemiesGroupedByEnemyCount.map((enemiesGroup, index) => {
           return (
-            <Button.Group vertical={true} key={index}>
+            <Button.Group
+              vertical={true}
+              key={index}
+            >
               {enemiesGroup.map((enemy) => {
                 return (
                   <Button

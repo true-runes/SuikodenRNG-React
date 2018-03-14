@@ -13,7 +13,7 @@ const Routes = [
 
 const Navbar = () => {
   return (
-    <Menu widths={Routes.length as any} stackable={true}>
+    <Menu widths={Routes.length as any}>
       {Routes.map((route, index) => {
         return (
           <Menu.Item
