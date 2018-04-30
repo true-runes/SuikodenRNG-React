@@ -24,7 +24,6 @@ export function findRNG(area: Area, encounters: number[], rng: RNG, progress?: (
         progress ? progress(status) : console.log(status);
         const result = bayerMoore(fights, encounters, area.encounterTable.length);
         if (result !== null) {
-          console.log(fights);
           status.done = true;
           status.result = fightsRNG[result];
           status.message = `Runtime: ${(new Date().getTime() - startTime) / 1000} seconds.`;

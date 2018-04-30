@@ -33,7 +33,6 @@ class ItemDropsResult extends React.Component<Props, State> {
         rng: drop.rng
       };
     });
-    console.log(drops);
     this.setState({ drops });
   }
 
