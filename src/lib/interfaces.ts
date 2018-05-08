@@ -19,6 +19,7 @@ export interface FindRNGStatus {
   progress: number;
   done: boolean;
   result?: number;
+  prevBattleRNG?: number;
 }
 
 export interface Encounter {

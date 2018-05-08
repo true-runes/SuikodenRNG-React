@@ -27,6 +27,9 @@ function findRNG(area, encounters, rng_val, progress) {
         if (result !== null) {
           status.done = true;
           status.result = fightsRNG[result];
+          status.prevBattleRNG = fightsRNG[(result - 1) % arraySize];
+          console.log(fightsRNG[result]);
+          console.log(fightsRNG[(result - 1) % arraySize]);
           status.message = `Runtime: ${(new Date().getTime() - startTime) / 1000} seconds.`;
           progress ? progress(status) : console.log(status);
           return fightsRNG[result];
@@ -50,7 +53,7 @@ function findRNG(area, encounters, rng_val, progress) {
       progress ? progress(status) : console.log(status);
     }
   }
-  if(progress) progress({ progress: 100, message: 'No match found.', done: true });
+  if (progress) progress({ progress: 100, message: 'No match found.', done: true });
   return null;
 }
 

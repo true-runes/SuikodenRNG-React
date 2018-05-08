@@ -69,7 +69,8 @@ export default class RNGFinderContainer extends React.Component<Props, State> {
         this.state.worker.postMessage({ area: areaProps, encounters, rng});
         this.state.worker.onmessage = (m: any) => {
           const result = m.data.result ? m.data.result.rng : null;
-          const status = {...m.data, result };
+          const prevBattleRNG = m.data.prevBattleRNG ? m.data.prevBattleRNG.rng : null;
+          const status = {...m.data, result, prevBattleRNG };
           this.setState({ status, running: !status.done });
         };
       });

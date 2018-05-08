@@ -10,12 +10,17 @@ interface Props extends Status {
 
 export default class RNGFinderStatus extends React.Component<Props, {}> {
   render() {
-    const { message, progress, done, result, running } = this.props;
+    const { message, progress, done, prevBattleRNG, result, running } = this.props;
     return (
       <Container textAlign="center">
         {this.props.result &&
           <Segment>
-            {numToHexString(result!)}
+            <p>
+              First Battle RNG: {numToHexString(result!)}
+            </p>
+            <p>
+              Previous Battle RNG: {numToHexString(prevBattleRNG!)}
+            </p>
           </Segment>
         }
         <Progress
