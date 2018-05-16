@@ -38,7 +38,9 @@ const EnemyButtonContainer = (props: Props) => {
         if (groups[enemyCount] === undefined) {
           groups[enemyCount] = [];
         }
-        groups[enemyCount].push(enemyData);
+        if (!groups[enemyCount].some(currentEnemyData => enemyData.name === currentEnemyData.name)) {
+          groups[enemyCount].push(enemyData);
+        }
         return groups;
       },
       new Array(6))
