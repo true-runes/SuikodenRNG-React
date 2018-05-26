@@ -39,8 +39,7 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
         };
       }),
       fightsList,
-      fightIndex: 0,
-      rngIndex: 0
+      index: 0
     };
     this.state = { store: createStore(reducer, initialState) };
   }

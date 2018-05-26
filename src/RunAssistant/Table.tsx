@@ -18,7 +18,7 @@ interface Props {
 const mapStateToProps = (state: RunAssistState) => {
   return {
     fights: getCurrentFights(state),
-    currentRow: state.fightIndex
+    currentRow: state.index
   };
 };
 

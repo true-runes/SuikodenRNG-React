@@ -6,68 +6,58 @@ const initialState: State = {
   currentArea: 0,
   areas: [],
   fightsList: [],
-  fightIndex: 0,
-  rngIndex: 0
+  index: 0,
 };
 
-function calcFightIndexAfterRNGChange(fights: Fight[], rngIndex: number): number {
+function calcFightIndexAfterRNGChange(fights: Fight[], index: number): number {
   for (let i = 0; i < fights.length; i++) {
-    if (fights[i].index > rngIndex) {
+    if (fights[i].index > index) {
       return i;
     }
   }
   return fights.length - 1;
 }
 
-function calcRNGIndexJump(current: number, jump: number, last: number): number {
-  if (current + jump < 0) {
-    return 0;
-  } else if (current + jump > last) {
-    return last;
-  }
-  return current + jump;
-}
-
 export default handleActions(
   {
     SWITCH_AREA: (state: State, action) => {
       const currentArea: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
+      const rngIndex = getCurrentFight(state).index;
       if (currentArea === -1) {
         return state;
       }
 
-      let fightIndex = state.fightIndex;
-      // Decrement fightIndex until rng is lower than current
-      while (state.fightsList[currentArea][fightIndex].index > state.rngIndex) {
-        fightIndex--;
+      let index = state.index;
+      // Decrement index until rng is lower than current
+      while (state.fightsList[currentArea][index].index > rngIndex) {
+        index--;
       }
 
-      // Then increment fightIndex until rng is 1 higher than current
-      while (state.fightsList[currentArea][fightIndex].index < state.rngIndex) {
-        fightIndex++;
+      // Then increment index until rng is 1 higher than current
+      while (state.fightsList[currentArea][index].index < rngIndex) {
+        index++;
       }
+
       return {
         ...state,
         currentArea,
-        fightIndex
+        index
       };
     },
     PREVIOUS_FIGHT: (state: State, action) => {
-      if (state.fightIndex !== 0) {
+      if (state.index !== 0) {
         return {
           ...state,
-          fightIndex: state.fightIndex - 1,
-          rngIndex: getCurrentFights(state)[state.fightIndex - 1].index
+          index: state.index - 1
         };
       }
       return state;
     },
     NEXT_FIGHT: (state, action) => {
-      if (state.fightIndex < getCurrentFights(state).length - 1) {
+      if (state.index < getCurrentFights(state).length - 1) {
         return {
           ...state,
-          fightIndex: state.fightIndex + 1,
-          rngIndex: getCurrentFights(state)[state.fightIndex + 1].index
+          index: state.index + 1
         };
       }
       return state;
@@ -76,29 +66,25 @@ export default handleActions(
       if (action.index < getCurrentFights(state).length - 1) {
         return {
           ...state,
-          fightIndex: action.index,
-          rngIndex: getCurrentFights(state)[action.index].index
+          index: action.index
         };
       }
       return state;
     },
     FIND_FIGHT: (state, action) => {
-      let fightIndex = findFight(state, action.name);
-      fightIndex = fightIndex !== -1 ? fightIndex : state.fightIndex;
+      let index = findFight(state, action.name);
+      index = index !== -1 ? index : state.index;
       return {
         ...state,
-        fightIndex,
-        rngIndex: getCurrentFights(state)[fightIndex].index
+        index
       };
     },
     JUMP_RNG: (state, action) => {
       const fights: Fight[] = getCurrentFights(state);
-      const rngIndex = calcRNGIndexJump(state.rngIndex, action.jump, fights[fights.length - 1].index);
-      const fightIndex = calcFightIndexAfterRNGChange(fights, rngIndex);
+      const index = calcFightIndexAfterRNGChange(fights, getCurrentFight(state).index + action.jump);
       return {
         ...state,
-        rngIndex,
-        fightIndex
+        index
       };
     }
   },
@@ -113,7 +99,7 @@ export function getCurrentEnemies(state: State): EnemyGroupData[] {
 }
 
 export function getCurrentFight(state: State): Fight {
-  return state.fightsList[state.currentArea][state.fightIndex];
+  return state.fightsList[state.currentArea][state.index];
 }
 
 export function getCurrentFights(state: State): Fight[] {
@@ -124,14 +110,14 @@ export function getFight(state: State, index: number): Fight {
   return getCurrentFights(state)[index];
 }
 
-// Returns fightIndex of next fight of an enemy group
+// Returns index of next fight of an enemy group
 export function findFight(state: State, enemyGroup: string): number {
   return getCurrentFights(state).findIndex((fight, index) => {
-    return (fight.enemyGroup.name === enemyGroup && index > state.fightIndex);
+    return (fight.enemyGroup.name === enemyGroup && index > state.index);
   });
 }
 
-// Returns fightIndex of next fight with current enemyGroup
+// Returns index of next fight with current enemyGroup
 export function findNextFight(state: State): number {
   const name: string = getCurrentFight(state).enemyGroup.name;
   return findFight(state, name);
