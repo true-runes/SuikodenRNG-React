@@ -2752,7 +2752,7 @@ export const enemies = {
   },
   'Shasarazade Fortress': {
     'name': 'Shasarazade Fortress',
-    'encounterRate': 2,
+    'encounterRate': 3,
     'encounters': [
       { 'name': '4 EliteSoldier',
         'parseString': '4 EliteSoldier' },
