@@ -23,13 +23,14 @@ export default handleActions(
     SWITCH_AREA: (state: State, action) => {
       const currentArea: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
       const rngIndex = getCurrentFight(state).index;
+      console.log(rngIndex);
       if (currentArea === -1) {
         return state;
       }
 
       let index = state.index;
       // Decrement index until rng is lower than current
-      while (state.fightsList[currentArea][index].index > rngIndex) {
+      while (state.fightsList[currentArea][index].index > rngIndex && index > 0) {
         index--;
       }
 
