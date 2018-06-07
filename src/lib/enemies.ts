@@ -1027,7 +1027,7 @@ export const enemies = {
   },
   'Kalekka': {
     'name': 'Kalekka',
-    'encounterRate': 2,
+    'encounterRate': 4,
     'encounters': [
       { 'name': '1 DemonHound',
         'parseString': '1 DemonHound' },
@@ -1454,7 +1454,7 @@ export const enemies = {
   },
   'Magicians Island': {
     'name': 'Magicians Island',
-    'encounterRate': 2,
+    'encounterRate': 4,
     'encounters': [
       { 'name': '4 HollyBoy',
         'parseString': '4 HollyBoy' },
