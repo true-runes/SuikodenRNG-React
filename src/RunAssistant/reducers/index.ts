@@ -1,12 +1,14 @@
 import { EnemyGroupData, Fight } from '../../lib/interfaces';
 import { RunAssistState as State } from '../interfaces';
 import { handleActions } from 'redux-actions';
+import { bayerMoore } from  '../../lib/findRNG';
 
 const initialState: State = {
   currentArea: 0,
   areas: [],
   fightsList: [],
   index: 0,
+  pattern: []
 };
 
 function calcFightIndexAfterRNGChange(fights: Fight[], index: number): number {
@@ -23,7 +25,6 @@ export default handleActions(
     SWITCH_AREA: (state: State, action) => {
       const currentArea: number = state.areas.map(area => area.name).findIndex(name => action.area === name);
       const rngIndex = getCurrentFight(state).index;
-      console.log(rngIndex);
       if (currentArea === -1) {
         return state;
       }
@@ -42,6 +43,7 @@ export default handleActions(
       return {
         ...state,
         currentArea,
+        pattern: [],
         index
       };
     },
@@ -49,6 +51,7 @@ export default handleActions(
       if (state.index !== 0) {
         return {
           ...state,
+          pattern: [],
           index: state.index - 1
         };
       }
@@ -58,6 +61,7 @@ export default handleActions(
       if (state.index < getCurrentFights(state).length - 1) {
         return {
           ...state,
+          pattern: [],
           index: state.index + 1
         };
       }
@@ -67,16 +71,40 @@ export default handleActions(
       if (action.index < getCurrentFights(state).length - 1) {
         return {
           ...state,
+          pattern: [],
           index: action.index
         };
       }
       return state;
     },
     FIND_FIGHT: (state, action) => {
+      let pattern = [];
+      if (action.pattern) {
+        const currentArea = getCurrentArea(state);
+        const encounterTableIndex = getEnemyGroupEncounterIndex(action.name, currentArea.enemies);
+        pattern = state.pattern.concat([encounterTableIndex]);
+        const fights = getCurrentFights(state)
+          .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)));
+        if (pattern.length > 1) {
+          const i = bayerMoore(fights, pattern, currentArea.enemies.length);
+          console.log(fights, pattern);
+          console.log(i);
+          if (i !== null) {
+            return {
+              ...state,
+              pattern,
+              index: i + pattern.length - 1
+            };
+          } else {
+            return state;
+          }
+        }
+      }
       let index = findFight(state, action.name);
       index = index !== -1 ? index : state.index;
       return {
         ...state,
+        pattern,
         index
       };
     },
@@ -85,6 +113,7 @@ export default handleActions(
       const index = calcFightIndexAfterRNGChange(fights, getCurrentFight(state).index + action.jump);
       return {
         ...state,
+        pattern: [],
         index
       };
     }
@@ -122,4 +151,10 @@ export function findFight(state: State, enemyGroup: string): number {
 export function findNextFight(state: State): number {
   const name: string = getCurrentFight(state).enemyGroup.name;
   return findFight(state, name);
+}
+
+function getEnemyGroupEncounterIndex(name: string, enemies: EnemyGroupData[]) {
+  return enemies.findIndex(group => {
+    return (group.name === name);
+  });
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Container, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
+import { Button, Checkbox, Container, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
 import EnemyButtonContainer from './EnemyButtons';
 import { RunAssistState } from './interfaces';
 import { Fight } from '../lib/interfaces';
@@ -27,19 +27,6 @@ const mapDispatchToProps = {
   switchArea
 };
 
-/*
-interface Props {
-  areas: string[];
-  currentArea: string;
-  findNextFight: () => Fight | null;
-  getCurrentFight: () => Fight;
-  jumpRNG: (jump: number) => any;
-  nextFight: () => any;
-  previousFight: () => any;
-  switchArea: (area: string) => any;
-}
-*/
-
 const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFight: Fight): string => {
   if (nextFightWithSameGroup === null) {
     return `No more fights with ${currentFight.enemyGroup.name} left.`;
@@ -50,6 +37,10 @@ const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFigh
 };
 
 class Controls extends React.Component<any, any> {
+  state = {
+    pattern: false
+  };
+
   componentDidMount() {
     document.addEventListener(
       'keydown',
@@ -68,7 +59,7 @@ class Controls extends React.Component<any, any> {
     const { areas, currentArea } = this.props;
     return (
       <Container>
-        <EnemyButtonContainer/>
+        <EnemyButtonContainer pattern={this.state.pattern} />
         <Segment style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Dropdown
             label="Areas"
@@ -79,6 +70,12 @@ class Controls extends React.Component<any, any> {
               this.props.switchArea(data.value as string);
             }}
             selection={true}
+          />
+          <Checkbox
+            style={{ display: 'flex', alignItems: 'center' }}
+            label="Pattern Mode"
+            checked={this.state.pattern}
+            onChange={() => this.setState(prevState => ({ pattern: !this.state.pattern }))}
           />
           <span style={{ alignItems: 'flex-end' }}>
             <span>

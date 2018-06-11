@@ -5,4 +5,5 @@ export interface RunAssistState {
   areas: { name: string, enemies: EnemyGroupData[] }[];
   fightsList: Fight[][];
   index: number;
+  pattern: number[];
 }

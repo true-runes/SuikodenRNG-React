@@ -16,9 +16,10 @@ export const selectFight = (index: number) => ({
   index
 });
 
-export const findFight = (name: string) => ({
+export const findFight = (name: string, pattern: boolean) => ({
   type: 'FIND_FIGHT',
-  name
+  name,
+  pattern
 });
 
 export const jumpRNG = (jump: number) => ({

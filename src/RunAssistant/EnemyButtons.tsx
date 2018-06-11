@@ -19,7 +19,8 @@ const mapDispatchToProps = {
 
 interface Props {
   enemies: EnemyGroupData[];
-  findFight: (name: string) => any;
+  findFight: (name: string, pattern: boolean) => any;
+  pattern: boolean;
 }
 
 const evenColumnDiv: StyledFunction<{ columns: number} & React.HTMLProps<HTMLDivElement>> = styled.div;
@@ -71,7 +72,7 @@ const EnemyButtonContainer = (props: Props) => {
                       key={enemy.name}
                       style={{ width: '100%', margin: '2px 0', flex: '0 0 auto' }}
                       content={enemy.name}
-                      onClick={() => props.findFight(enemy.name)}
+                      onClick={() => props.findFight(enemy.name, props.pattern)}
                     />
                   );
                 })}

@@ -52,7 +52,7 @@ export function findRNG(area: Area, encounters: number[], rng: RNG, progress?: (
   return null;
 }
 
-function bayerMoore(input: number[], pattern: number[], max: number): number | null {
+export function bayerMoore(input: number[], pattern: number[], max: number): number | null {
   // Create bad char array
   const badChar: Array<number> = new Array(max).fill(-1);
   for (let j = 0; j < pattern.length - 1; j++) {
@@ -78,4 +78,8 @@ function bayerMoore(input: number[], pattern: number[], max: number): number | n
     i += jump;
   }
   return null;
+}
+
+export function fr(fights: number[], encounters: number[], encounterTableLength: number): number|null {
+  return bayerMoore(fights, encounters, encounterTableLength);
 }

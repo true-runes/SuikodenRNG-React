@@ -42,7 +42,8 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
         };
       }),
       fightsList,
-      index: 0
+      index: 0,
+      pattern: []
     };
     this.state = { store: createStore(reducer, initialState, applyMiddleware(logger)) };
   }
