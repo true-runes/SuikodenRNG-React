@@ -69,7 +69,7 @@ const EnemyButtonContainer = (props: Props) => {
                   return (
                     <Button
                       key={enemy.name}
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', margin: '2px 0', flex: '0 0 auto' }}
                       content={enemy.name}
                       onClick={() => props.findFight(enemy.name)}
                     />

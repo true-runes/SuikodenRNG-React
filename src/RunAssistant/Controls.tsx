@@ -27,6 +27,7 @@ const mapDispatchToProps = {
   switchArea
 };
 
+/*
 interface Props {
   areas: string[];
   currentArea: string;
@@ -37,6 +38,7 @@ interface Props {
   previousFight: () => any;
   switchArea: (area: string) => any;
 }
+*/
 
 const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFight: Fight): string => {
   if (nextFightWithSameGroup === null) {
@@ -47,36 +49,52 @@ const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFigh
   `;
 };
 
-const Controls = (props: Props) => {
-  const { areas, currentArea } = props;
-  return (
-    <Container>
-      <EnemyButtonContainer/>
-      <Segment style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Dropdown
-          label="Areas"
-          placeholder="Area"
-          value={currentArea}
-          options={areas.map((name) => { return { key: name, value: name, text: name }; })}
-          onChange={(e: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-            props.switchArea(data.value as string);
-          }}
-          selection={true}
-        />
-        <span style={{ alignItems: 'flex-end' }}>
-          <span>
-            {generateNextFightInfo(props.findNextFight(), props.getCurrentFight())}
+class Controls extends React.Component<any, any> {
+  componentDidMount() {
+    document.addEventListener(
+      'keydown',
+      event => {
+        const target = event.target as HTMLElement;
+        if (target.tagName.toLowerCase() !== 'input') {
+          if (event.keyCode === 78) {
+            this.props.nextFight();
+          }
+        }
+      },
+      false);
+  }
+
+  render() {
+    const { areas, currentArea } = this.props;
+    return (
+      <Container>
+        <EnemyButtonContainer/>
+        <Segment style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Dropdown
+            label="Areas"
+            placeholder="Area"
+            value={currentArea}
+            options={areas.map((name) => { return { key: name, value: name, text: name }; })}
+            onChange={(e: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+              this.props.switchArea(data.value as string);
+            }}
+            selection={true}
+          />
+          <span style={{ alignItems: 'flex-end' }}>
+            <span>
+              {generateNextFightInfo(this.props.findNextFight(), this.props.getCurrentFight())}
+            </span>
+            <Button content="+100" onClick={() => this.props.jumpRNG(100)}/>
+            <Button content="+500" onClick={() => this.props.jumpRNG(500)}/>
+            <Button content="+1000" onClick={() => this.props.jumpRNG(1000)}/>
+            <Button content="Previous" onClick={() => this.props.previousFight()}/>
+            <Button content="Next" onClick={() => this.props.nextFight()}/>
           </span>
-          <Button content="+100" onClick={() => props.jumpRNG(100)}/>
-          <Button content="+500" onClick={() => props.jumpRNG(500)}/>
-          <Button content="+1000" onClick={() => props.jumpRNG(1000)}/>
-          <Button content="Previous" onClick={() => props.previousFight()}/>
-          <Button content="Next" onClick={() => props.nextFight()}/>
-        </span>
-      </Segment>
-    </Container>
-  );
-};
+        </Segment>
+      </Container>
+    );
+  }
+}
 
 const ConnectedControls = connect(mapStateToProps, mapDispatchToProps)(Controls);
 

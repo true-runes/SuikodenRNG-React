@@ -7,8 +7,11 @@ import RNG from '../lib/rng';
 import { Fight } from '../lib/interfaces';
 import { ConnectedTable as Table } from './Table';
 import ConnectedControls from './Controls';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducer from './reducers';
+import { createLogger } from 'redux-logger';
+
+const logger = createLogger({});
 
 interface Props extends RouteComponentProps<any> {
   areas: {
@@ -41,7 +44,7 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       fightsList,
       index: 0
     };
-    this.state = { store: createStore(reducer, initialState) };
+    this.state = { store: createStore(reducer, initialState, applyMiddleware(logger)) };
   }
 
   render() {
