@@ -30,6 +30,10 @@ export default handleActions(
       }
 
       let index = state.index;
+      if (state.fightsList[currentArea].length <= index) {
+        index = state.fightsList[currentArea].length - 1;
+      }
+
       // Decrement index until rng is lower than current
       while (state.fightsList[currentArea][index].index > rngIndex && index > 0) {
         index--;
