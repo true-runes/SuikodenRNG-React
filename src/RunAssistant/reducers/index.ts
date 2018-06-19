@@ -82,30 +82,33 @@ export default handleActions(
       return state;
     },
     FIND_FIGHT: (state, action) => {
-      let pattern = [];
-      if (action.pattern) {
-        const currentArea = getCurrentArea(state);
-        const encounterTableIndex = getEnemyGroupEncounterIndex(action.name, currentArea.enemies);
-        pattern = state.pattern.concat([encounterTableIndex]);
-        const fights = getCurrentFights(state)
-          .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)));
-        if (pattern.length > 1) {
-          const i = bayerMoore(fights, pattern, currentArea.enemies.length);
-          console.log(fights, pattern);
-          console.log(i);
-          if (i !== null) {
-            return {
-              ...state,
-              pattern,
-              index: i + pattern.length - 1
-            };
-          } else {
-            return state;
-          }
-        }
-      }
       let index = findFight(state, action.name);
       index = index !== -1 ? index : state.index;
+      return {
+        ...state,
+        pattern: [],
+        index
+      };
+    },
+    FIND_MATCH: (state, action) => {
+      const currentArea = getCurrentArea(state);
+      const encounterTableIndex = getEnemyGroupEncounterIndex(action.name, currentArea.enemies);
+      const pattern = state.pattern.concat([encounterTableIndex]);
+      const fights = getCurrentFights(state)
+        .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)));
+      if (pattern.length > 1) {
+        const i = bayerMoore(fights, pattern, currentArea.enemies.length);
+        if (i !== null) {
+          return {
+            ...state,
+            pattern,
+            index: i + pattern.length - 1
+          };
+        } else {
+          return state;
+        }
+      }
+      const index = findFight(state, action.name) !== -1 ? findFight(state, action.name) : state.index;
       return {
         ...state,
         pattern,

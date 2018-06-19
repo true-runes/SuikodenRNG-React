@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Container, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { findFight } from './actions';
+import { findFight, findMatch } from './actions';
 import { getCurrentEnemies } from './reducers';
 import { RunAssistState } from './interfaces';
 import { EnemyGroupData } from '../lib/interfaces';
@@ -14,12 +14,14 @@ const mapStateToProps = (state: RunAssistState) => {
 };
 
 const mapDispatchToProps = {
-  findFight
+  findFight,
+  findMatch
 };
 
 interface Props {
   enemies: EnemyGroupData[];
-  findFight: (name: string, pattern: boolean) => any;
+  findFight: (name: string) => any;
+  findMatch: (name: string) => any;
   pattern: boolean;
 }
 
@@ -54,6 +56,7 @@ const EnemyButtonContainer = (props: Props) => {
       },
       []);
 
+  console.log(props);
   return (
     <Container style={{ width: '100%' }}>
       <Segment>
@@ -72,7 +75,7 @@ const EnemyButtonContainer = (props: Props) => {
                       key={enemy.name}
                       style={{ width: '100%', margin: '2px 0', flex: '0 0 auto' }}
                       content={enemy.name}
-                      onClick={() => props.findFight(enemy.name, props.pattern)}
+                      onClick={() => props.pattern ? props.findMatch(enemy.name) : props.findFight(enemy.name)}
                     />
                   );
                 })}
