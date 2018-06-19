@@ -108,11 +108,11 @@ export default handleActions(
           return state;
         }
       }
-      const index = findFight(state, action.name) !== -1 ? findFight(state, action.name) : state.index;
+      const index = findFight({...state, index: 0 }, action.name);
       return {
         ...state,
         pattern,
-        index
+        index: index !== -1 ? index : state.index
       };
     },
     JUMP_RNG: (state, action) => {
