@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Button, Checkbox, Container, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
 import EnemyButtonContainer from './EnemyButtons';
 import { RunAssistState } from './interfaces';
-import { Fight } from '../lib/interfaces';
 import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
 import { findNextFight, getCurrentArea, getCurrentFight, getFight } from './reducers';
 
@@ -25,15 +24,6 @@ const mapDispatchToProps = {
   previousFight,
   findFight,
   switchArea
-};
-
-const generateNextFightInfo = (nextFightWithSameGroup: Fight | null, currentFight: Fight): string => {
-  if (nextFightWithSameGroup === null) {
-    return `No more fights with ${currentFight.enemyGroup.name} left.`;
-  }
-  return `
-    Next Fight with ${nextFightWithSameGroup.enemyGroup.name} in ${nextFightWithSameGroup.index - currentFight.index}.
-  `;
 };
 
 class Controls extends React.Component<any, any> {
@@ -72,15 +62,12 @@ class Controls extends React.Component<any, any> {
             selection={true}
           />
           <Checkbox
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: 'flex', margin: '0 1em', alignItems: 'center' }}
             label="Pattern Mode"
             checked={this.state.pattern}
             onChange={() => this.setState(prevState => ({ pattern: !this.state.pattern }))}
           />
-          <span style={{ alignItems: 'flex-end' }}>
-            <span>
-              {generateNextFightInfo(this.props.findNextFight(), this.props.getCurrentFight())}
-            </span>
+          <span style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}>
             <Button content="+100" onClick={() => this.props.jumpRNG(100)}/>
             <Button content="+500" onClick={() => this.props.jumpRNG(500)}/>
             <Button content="+1000" onClick={() => this.props.jumpRNG(1000)}/>

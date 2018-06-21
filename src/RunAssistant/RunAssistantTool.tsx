@@ -30,6 +30,9 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       return this.props.areas[name];
     });
     const fightsList: Fight[][] = areas.map(area => area.generateEncounters(new RNG(rng), iterations, partylevel));
+    const index: number = params.get('index') !== null
+      ? parseInt(params.get('index') as string)
+      : 0;
     const initialState = {
       currentArea: 0,
       areas: areas.map((area: AreaClass) => {
@@ -42,7 +45,7 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
         };
       }),
       fightsList,
-      index: 0,
+      index: index < fightsList[0].length ? index : 0,
       pattern: []
     };
     this.state = { store: createStore(reducer, initialState, applyMiddleware(logger)) };

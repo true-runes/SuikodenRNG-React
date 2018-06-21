@@ -56,7 +56,6 @@ const EnemyButtonContainer = (props: Props) => {
       },
       []);
 
-  console.log(props);
   return (
     <Container style={{ width: '100%' }}>
       <Segment>
