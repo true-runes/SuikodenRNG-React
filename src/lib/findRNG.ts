@@ -70,8 +70,6 @@ export function bayerMoore(input: number[], pattern: number[], max: number): num
       if (pttrnIndx === -1) {
         return i - pattern.length + 1;
       }
-      console.log('Next Input', input[inputIndx], 'Next Input Index', inputIndx);
-      console.log('Next Pattern', pattern[pttrnIndx], 'Next Pattern Index', pttrnIndx);
     }
     const badCharVal = badChar[input[inputIndx]];
     const jump = badCharVal === -1 ? pattern.length - 1 : pattern.length - badCharVal - 1 - (i - inputIndx);
