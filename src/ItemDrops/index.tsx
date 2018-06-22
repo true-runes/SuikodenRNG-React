@@ -63,6 +63,7 @@ class ItemDropsForm extends React.Component<Props, State> {
           <Form.Input
             label="Iterations"
             name="iterations"
+            step="500"
             type="number"
             value={this.state.iterations}
             onChange={this.handleInputChange}

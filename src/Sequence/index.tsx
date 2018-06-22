@@ -44,6 +44,7 @@ class SequenceForm extends React.Component<RouteComponentProps<any>, State> {
           <Form.Input
             label="Iterations"
             name="iterations"
+            step="500"
             type="number"
             value={this.state.iterations}
             onChange={this.handleInputChange}
