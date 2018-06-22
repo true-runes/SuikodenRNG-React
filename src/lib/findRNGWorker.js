@@ -79,7 +79,7 @@ function bayerMoore(input, pattern, max) {
     }
     const badCharVal = badChar[input[inputIndx]];
     // console.log('badCharVal:', badCharVal);
-    const jump = badCharVal === -1 ? pattern.length - 1 : pattern.length - badCharVal - 1;
+    const jump = badCharVal === -1 ? pattern.length - 1 : pattern.length - badCharVal - 1 - (i - inputIndx);
     i += jump;
   }
   return null;

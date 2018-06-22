@@ -94,25 +94,27 @@ export default handleActions(
       const currentArea = getCurrentArea(state);
       const encounterTableIndex = getEnemyGroupEncounterIndex(action.name, currentArea.enemies);
       const pattern = state.pattern.concat([encounterTableIndex]);
+      const searchStartIndex = Math.max(0, state.index - pattern.length);
       const fights = getCurrentFights(state)
-        .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)));
+        .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)))
+        .slice(searchStartIndex);
       if (pattern.length > 1) {
         const i = bayerMoore(fights, pattern, currentArea.enemies.length);
         if (i !== null) {
           return {
             ...state,
             pattern,
-            index: i + pattern.length - 1
+            index: searchStartIndex + i + pattern.length - 1
           };
         } else {
           return state;
         }
       }
-      const index = findFight({...state, index: 0 }, action.name);
+      const index = findFight({...state, index: searchStartIndex }, action.name);
       return {
         ...state,
         pattern,
-        index: index !== -1 ? index : state.index
+        index: index !== -1 ? index : searchStartIndex
       };
     },
     JUMP_RNG: (state, action) => {
