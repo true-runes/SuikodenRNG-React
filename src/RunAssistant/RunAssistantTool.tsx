@@ -29,7 +29,9 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
     const areas: AreaClass[] = params.get('areas')!.split(',').map((name) => {
       return this.props.areas[name];
     });
-    const fightsList: Fight[][] = areas.map(area => area.generateEncounters(new RNG(rng), iterations, partylevel));
+    const fightsList: Fight[][] = areas.map(
+      area => area.generateEncounters(new RNG(rng), iterations, partylevel, true)
+    );
     const index: number = params.get('index') !== null
       ? parseInt(params.get('index') as string)
       : 0;

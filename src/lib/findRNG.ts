@@ -22,7 +22,7 @@ export function findRNG(area: Area, encounters: number[], rng: RNG, progress?: (
       if (index === arraySize - 1) {
         status.message = `Checking group of ${arraySize} fights`;
         progress ? progress(status) : console.log(status);
-        const result = bayerMoore(fights, encounters, area.encounterTable.length);
+        const result = boyerMoore(fights, encounters, area.encounterTable.length);
         if (result !== null) {
           status.done = true;
           status.result = fightsRNG[result];
@@ -52,32 +52,33 @@ export function findRNG(area: Area, encounters: number[], rng: RNG, progress?: (
   return null;
 }
 
-export function bayerMoore(input: number[], pattern: number[], max: number): number | null {
+export function boyerMoore(input: number[], pattern: number[], max: number): number | null {
+  const maxOffset = pattern.length - 1;
   // Create bad char array
   const badChar: Array<number> = new Array(max).fill(-1);
   for (let j = 0; j < pattern.length - 1; j++) {
-    badChar[pattern[j]] = j;
+    badChar[pattern[j]] = maxOffset - j;
   }
 
-  let i = pattern.length - 1;
+  let i = maxOffset;
   while (i < input.length) {
     // check if match
-    let inputIndx = i;
-    let pttrnIndx = pattern.length - 1;
-    while (input[inputIndx] === pattern[pttrnIndx]) {
-      inputIndx--;
-      pttrnIndx--;
-      if (pttrnIndx === -1) {
+    let inputIndex = i;
+    let patternIndex = maxOffset;
+    while (input[inputIndex] === pattern[patternIndex]) {
+      inputIndex--;
+      patternIndex--;
+      if (patternIndex === -1) {
         return i - pattern.length + 1;
       }
     }
-    const badCharVal = badChar[input[inputIndx]];
-    const jump = badCharVal === -1 ? pattern.length - 1 : pattern.length - badCharVal - 1 - (i - inputIndx);
+    const badCharVal = badChar[input[inputIndex]];
+    const jump = badCharVal === -1 ? maxOffset : badCharVal || 1;
     i += jump;
   }
   return null;
 }
 
 export function fr(fights: number[], encounters: number[], encounterTableLength: number): number|null {
-  return bayerMoore(fights, encounters, encounterTableLength);
+  return boyerMoore(fights, encounters, encounterTableLength);
 }

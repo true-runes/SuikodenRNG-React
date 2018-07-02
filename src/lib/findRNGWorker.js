@@ -19,17 +19,16 @@ function findRNG(area, encounters, rng_val, progress) {
     if (isBattle(rng.rng2)) {
       fights[index] = getEncounterIndex(nextrng(rng.rng), area.tableLength);
       fightsRNG[index] = rng;
+      rng = nextrng(rng.rng);
       index++;
       if (index === arraySize - 1) {
         status.message = `Checking group of ${arraySize} fights`;
         progress ? progress(status) : console.log(status);
-        const result = bayerMoore(fights, encounters, area.tableLength);
+        const result = boyerMoore(fights, encounters, area.tableLength);
         if (result !== null) {
           status.done = true;
           status.result = fightsRNG[result];
           status.prevBattleRNG = fightsRNG[(result - 1) % arraySize];
-          console.log(fightsRNG[result]);
-          console.log(fightsRNG[(result - 1) % arraySize]);
           status.message = `Runtime: ${(new Date().getTime() - startTime) / 1000} seconds.`;
           progress ? progress(status) : console.log(status);
           return fightsRNG[result];
@@ -57,29 +56,30 @@ function findRNG(area, encounters, rng_val, progress) {
   return null;
 }
 
-function bayerMoore(input, pattern, max) {
+function boyerMoore(input, pattern, max) {
+  const maxOffset = pattern.length - 1;
   // Create bad char array
   const badChar = new Array(max).fill(-1);
   for (let j = 0; j < pattern.length - 1; j++) {
-    badChar[pattern[j]] = j;
+    badChar[pattern[j]] = maxOffset - j;
   }
 
-  // var pttrnIndx = pattern.length - 1;
-  let i = pattern.length - 1;
+  // var patternIndex = pattern.length - 1;
+  let i = maxOffset
   while (i < input.length) {
     // check if match
-    let inputIndx = i;
-    let pttrnIndx = pattern.length - 1;
-    while (input[inputIndx] === pattern[pttrnIndx]) {
-      inputIndx--;
-      pttrnIndx--;
-      if (pttrnIndx === -1) {
+    let inputIndex = i;
+    let patternIndex = pattern.length - 1;
+    while (input[inputIndex] === pattern[patternIndex]) {
+      inputIndex--;
+      patternIndex--;
+      if (patternIndex === -1) {
         return i - pattern.length + 1;
       }
     }
-    const badCharVal = badChar[input[inputIndx]];
+    const badCharVal = badChar[input[inputIndex]];
     // console.log('badCharVal:', badCharVal);
-    const jump = badCharVal === -1 ? pattern.length - 1 : pattern.length - badCharVal - 1 - (i - inputIndx);
+    const jump = badCharVal === -1 ? maxOffset : badCharVal || 1;
     i += jump;
   }
   return null;

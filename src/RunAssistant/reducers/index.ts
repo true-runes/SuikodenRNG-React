@@ -1,7 +1,7 @@
 import { EnemyGroupData, Fight } from '../../lib/interfaces';
 import { RunAssistState as State } from '../interfaces';
 import { handleActions } from 'redux-actions';
-import { bayerMoore } from  '../../lib/findRNG';
+import { boyerMoore } from  '../../lib/findRNG';
 
 const initialState: State = {
   currentArea: 0,
@@ -99,7 +99,7 @@ export default handleActions(
         .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)))
         .slice(searchStartIndex);
       if (pattern.length > 1) {
-        const i = bayerMoore(fights, pattern, currentArea.enemies.length);
+        const i = boyerMoore(fights, pattern, currentArea.enemies.length);
         if (i !== null) {
           return {
             ...state,

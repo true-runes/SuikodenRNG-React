@@ -49,7 +49,15 @@ export default class AreaClass {
     return encounterIndex;
   }
 
-  public generateEncounters(rng: RNG, iterations: number, partylevel: number): FightData[] {
+  // Realistic advances RNG whenever getEncounter is called.
+  // Sometimes, you get battles at 2 RNG values next to each other
+  // ex: You get a battle at index 1444 and index 1445
+  // What 99.999% of the time is that you hit the index at 1444 and skip the battle at 1445
+  // With realistic false it will show both battles.
+  // With realistic on it will show only 1444
+  // Realistic is recommended for RunAssistant and RNG finder
+  // Also, keep realistic off with partylevel > 0
+  public generateEncounters(rng: RNG, iterations: number, partylevel: number, realistic: boolean = false): FightData[] {
     const encounters: FightData[] = [];
     for (let i = 0; i < iterations; i++) {
       if (this.isBattle(rng)) {
@@ -59,6 +67,9 @@ export default class AreaClass {
         }
       }
       rng.next();
+      if (realistic) {
+        rng.next();
+      }
     }
     return encounters;
   }
