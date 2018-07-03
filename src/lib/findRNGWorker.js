@@ -19,7 +19,8 @@ function findRNG(area, encounters, rng_val, progress) {
     if (isBattle(rng.rng2)) {
       fights[index] = getEncounterIndex(nextrng(rng.rng), area.tableLength);
       fightsRNG[index] = rng;
-      rng = nextrng(rng.rng);
+      // Uncomment for realistic mode
+      // rng = nextrng(rng.rng);
       index++;
       if (index === arraySize - 1) {
         status.message = `Checking group of ${arraySize} fights`;

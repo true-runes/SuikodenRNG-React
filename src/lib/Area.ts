@@ -69,6 +69,7 @@ export default class AreaClass {
       rng.next();
       if (realistic) {
         rng.next();
+        i++;
       }
     }
     return encounters;
