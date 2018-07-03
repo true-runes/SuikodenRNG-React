@@ -10,6 +10,7 @@ import ItemDropsResult from './ItemDrops/Result';
 import RNGFinder from './RNGFinder';
 import RunAssistantForm from './RunAssistant';
 import RunAssistantResult from './RunAssistant/RunAssistantTool';
+import SpeechTest from './SpeechTest';
 import { enemies } from './lib/enemies';
 import { initAreas } from './lib/lib';
 import { Route } from 'react-router-dom';
@@ -81,6 +82,13 @@ class App extends React.Component {
           exact={true}
           render={() => (
             <RunAssistantResult areas={this.state.areas}/>
+          )}
+        />
+        <Route
+          path="/speech"
+          exact={true}
+          render={() => (
+            <SpeechTest areas={this.state.areas}/>
           )}
         />
       </div>
