@@ -1,23 +1,11 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { toggleColumn } from './actions';
-import { Column } from '../interfaces/Table';
+import { Column } from './interfaces';
 import { Checkbox, Dropdown } from 'semantic-ui-react';
 
 interface Props {
   columns: Column[];
   toggleColumn: (index: number) => any;
 }
-
-const mapStateToProps = (state: { columns: Column[] }) => {
-  return {
-    columns: state.columns
-  };
-};
-
-const mapDispatchToProps = {
-  toggleColumn
-};
 
 const ColumnToggle = (props: Props) => {
   return (
@@ -42,6 +30,4 @@ const ColumnToggle = (props: Props) => {
   );
 };
 
-const ConnectedColumnToggle = connect(mapStateToProps, mapDispatchToProps)(ColumnToggle);
-
-export default ConnectedColumnToggle;
+export default ColumnToggle;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Column } from '../interfaces/Table';
+import { Column } from '../Table/interfaces';
 import { Container } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { RunAssistState } from './interfaces';

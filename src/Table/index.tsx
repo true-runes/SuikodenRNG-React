@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
-import { Column } from '../interfaces/Table';
+import { Column } from './interfaces';
 import Table from './Table';
 import Filter from './Filter';
 import ColumnDropdown from './ColumnDropdown';
-import reducer from './reducers';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 
 interface Props {
@@ -16,15 +13,12 @@ interface Props {
   onRowClick?: (index: number) => any;
 }
 
-export default class TableContainer extends React.Component<Props, { store: any, rowsToRender?: number[] }> {
+export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender?: number[] }> {
   constructor(props: Props) {
     super(props);
-    const initialState = {
-      columns: props.columns
-    };
     this.state = {
       rowsToRender: undefined,
-      store: createStore(reducer, initialState)
+      columns: props.columns
     };
   }
 
@@ -40,27 +34,33 @@ export default class TableContainer extends React.Component<Props, { store: any,
     }) : this.props.data;
 
     return (
-      <Provider store={this.state.store}>
-        <AutoSizer>
-          {({ height, width }) => (
-            <Container>
-              <div style={{ display: 'flex', 'justifyContent': 'space-between', width, height: 38 }}>
-                <Filter
-                  data={this.props.data}
-                  setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
-                />
-                <ColumnDropdown/>
-              </div>
-              <Table
-                {...this.props}
-                data={data}
-                height={height - 38}
-                width={width}
+      <AutoSizer>
+        {({ height, width }) => (
+          <Container>
+            <div style={{ display: 'flex', 'justifyContent': 'space-between', width, height: 38 }}>
+              <Filter
+                data={this.props.data}
+                setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
               />
-            </Container>
-          )}
-        </AutoSizer>
-      </Provider>
+              <ColumnDropdown
+                columns={this.state.columns}
+                toggleColumn={(columnIndex => {
+                  const columns = this.state.columns;
+                  columns[columnIndex].show = columns[columnIndex].show === false ? true : false;
+                  this.setState({ columns });
+                })}
+              />
+            </div>
+            <Table
+              {...this.props}
+              columns={this.state.columns}
+              data={data}
+              height={height - 38}
+              width={width}
+            />
+          </Container>
+        )}
+      </AutoSizer>
     );
   }
 }

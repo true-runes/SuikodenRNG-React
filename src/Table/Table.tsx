@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Column } from '../interfaces/Table';
+import { Column } from './interfaces';
 import { Column as VirtColumn, Table as VirtTable } from 'react-virtualized';
 
 interface Props {
@@ -11,12 +10,6 @@ interface Props {
   currentRow?: number;
   onRowClick?: (index: number) => any;
 }
-
-const mapStateToProps = (state: { columns: Column[] }) => {
-  return {
-    columns: state.columns
-  };
-};
 
 const Table = (props: Props) => {
   return (
@@ -62,6 +55,4 @@ const Table = (props: Props) => {
   );
 };
 
-const ConnectedTable = connect(mapStateToProps)(Table);
-
-export default ConnectedTable;
+export default Table;
