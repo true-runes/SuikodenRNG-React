@@ -2408,9 +2408,9 @@ export const enemies = {
     },
     'areaType': 'World Map'
   },
-  'Scarleticia Castle': {
-    'name': 'Scarleticia Castle',
-    'encounterRate': 2,
+  'Scarleticia': {
+    'name': 'Scarleticia',
+    'encounterRate': 3,
     'encounters': [
       { 'name': '2 MadIvy',
         'parseString': '2 MadIvy' },
@@ -2421,7 +2421,9 @@ export const enemies = {
       { 'name': '6 Creeper',
         'parseString': '6 Creeper' },
       { 'name': '1 Nightmare',
-        'parseString': '1 Nightmare' }],
+        'parseString': '1 Nightmare' },
+      { 'name': '3 Creeper 1 Nightmare',
+        'parseString': '3 Creeper 1 Nightmare' }],
     'enemies': {
       'Creeper': {
         'bits': 600,
