@@ -87,7 +87,7 @@ If it's a random encounter it advances by one to determine what encounter it is.
 Trying to run advances RNG by one. Let Go and Bribe (including failed bribe)
 don't advance RNG.
 
-**Universal**
+###### Universal
 I'm gonna define **Fighter** as either enemy or party member to make this easier
 to explain. As an example, in a battle with McDohl vs 2 Kobolds there are 3
 Fighters. **Action** will refer to a fighters turn in the battle occuring.
@@ -104,16 +104,16 @@ defend.) Turn starts, RNG advances by 1. McDohl's action, RNG advances by
 3(McDohl + Kobold + Kobold.) First Kobold's turn, RNG advances by 2(current
 Kobold + remaining Kobold.) Remining Kobold goes, RNG advances by 1.
 
-**Attacks**
+###### Attacks
 RNG advances by a few RNG per regular attack, not sure on specifics. I assume
 there's a few calls to calculate miss or crit and damage roll. I think average
 RNG advancement here is 3.
 
-**Defend / Item**
+###### Defend / Item
 Actions like Defend or Medicine advance 0. However, using an item on someone
 affects turn order and that can affect RNG.
 
-**Runes**
+###### Runes
 Runes are all kinda different. There's 2 kinds when it comes to RNG
 advancement, Set and random. Set spells always advance RNG by the same amount.
 Here's a list of known set spells and how much they advance RNG.
@@ -142,7 +142,7 @@ Here's a list of known set spells and how much they advance RNG.
   10. Hell (~11000)
   11. Storm (26 + 2 per enemy?) Most likely set just don't know formula yet.
 
-**Unites**
+###### Unites
 Haven't tested really but the 3 I use in runs don't advance RNG much. These are:
   1. Talisman Attack (Gremio & Pahn)
   2. Master Pupil Attack (McDohl & Kai)
