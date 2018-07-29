@@ -1,51 +1,183 @@
 ## Suikoden RNG Generator
 This is a RNG calculator for the PS1 game Suikoden. It can predict RNG based
 events, such as future encounters, enemy drops, and finding your RNG Seed.
-
-## Known Mechanics
 This is all pseudocode. There is actual code in the repo.
 
-#### RNG call
-The RNG value is a 32bit unsigned integer. It advances via the formula below.
-It advances under these conditions. There might be more but these are off the
-top of my head.
+## RNG Value
+The RNG value is a 32bit unsigned integer. It's stored at address `0x00009010`.
+The formula to advance RNG is desribed below. Most likely, the RNG method is a
+Sony PSX library method and is not exclusive to Suikoden 1. Also, according to
+[this write-up](http://www.raphnet.net/electronique/psx_adaptor/Playstation.txt)
+the RNG memory address is in kernel space which would explain why it sometimes
+get overwritten (we'll get to this later.) Also, the first bit in the RNG value
+isn't ignored to the calculation and therefore values such as
+`10001111 00001010 10100000 11111111` and `00001111 00001010 10100000 11111111`
+are functionally equivalent.
+
+## What advances RNG?
+There's quite a bit to cover here, so I'll break this up into sections.
+
+### Outside of battle
+First off, I'll explain what I call grace period. Grace period is a certain
+amout of steps required before RNG starts advancing every step. It exists so you
+don't get spammed with random battles. On the world map, the grace period is 4
+steps. In dungeons (areas with random battles), the grace period is 30, 50, or 60
+steps, depending on the area. 60 is default, 50 is used in a few places, and 30
+is Kalekka only.
+
+Now, onto RNG advancements.
   1. Every step on World Map (Not in grace period).
   2. Every step in Dungeon (Not in grace period).
-  3. Every frame in an area with moving NPCs.
-    * My current theory is that advance 1-2 times per moving NPC in the area.
-      Once to decide if the npc moves, and if it does it advances a
-      2nd time to decide where to move. This hasn't been tested though and
-      wouldn't factor in when NPCs move multiple steps since they can only move
-      1 step per 4 frames. I'm assuming that it's 1 step per 4 frames since
-      that's the speed you move at.
-    * This advancement is applied when areas are loading as well. Which is why
+  3. Every frame in an area with moving characters/NPCs.
+    * RNG advances once per frame per persion to see if the person moves. If
+      it's determined that the person moves, ? more RNG calls are made to
+      determine which direction the NPC moves in and how many steps. While that
+      person is moving, the RNG call to determine if they're gonna move or not
+      isn't made. Funnily enough, this leads to RNG advancing less the more
+      often people move.
+    * These advancements is applied when areas are loading as well. Which is why
       (not) skipping the town text (Textbox with townname that appears when you enter
       a town) is important for RNG manipulation.
-    * Also advances during certain menus
+    * Also advances during certain menus. During most text boxes and in your
+      menu RNG doesn't advance even if there are moving people. However, people
+      can move during some menus and therefore RNG does advance. These 
+      exceptions are:
       1. Viki's Teleportation menu
       2. Sanchez/Mathiu's Party Menus
+    * Note that for some playable characters RNG advances for them even though
+      they cannot currently move. This happens most often in the meeting room in
+      your castle during story events.
+    * A special and kind of important case: Gregminster at the start of the
+      game. There's a few birds that hang out by the fountain in Gregminster.
+      They're actually treated as people for RNG advance RNG the same way. 
+      However, if you get close to the birds they fly away and RNG stops 
+      advancing for them. There's 7 moving people and 3 birds so after scaring 
+      the birds RNG advances 30% slower. This is why you should always move left
+      first during the Holy Rune setup. If you move down then left you're
+      introducing more variance since the birds will be on the screen longer.
   4. Every frame during Chinchironin (#FuckTaiHo)
-    * Current assumption is once per frame. Not tested at all though.
+    * RNG advances every frame during the Chinchironin game. It also jumps by
+      50~250 when a roll is made. It is most likely using cursor position + RNG
+      value to determine if a roll is made. And once the roll is made, it jumps a lot
+      calculating the result of the roll.
   5. During War Battles
-    * RNG Advanced depends on action. Each action advances RNG by a different
-      amount. That amount always seems to be at least several hundred though.
-    * Ninjas don't seem to advance RNG at all
+    * RNG automatically advances 100-200 at the start and end of war battles.
+    * RNG advancement depends on action. Each action advances RNG by a different
+      amount. Charge, Bow, and Dragon Knights advance by a lot (several
+      thousand.) Magic only advances by a little (less than 10.) I'll revisit
+      war battles later as there's quite a bit worth mentioning.
+    * Ninjas don't advance RNG at all.
   6. During duels
-    * Seems to advance by small amount every turn. Likely just used to determine
+    * Seems to advance by small amount (1-2) every turn. Likely just used to determine
       Kwanda's/Teo's action
-  7. During regular battles
-    * By far the most complex. Different actions advance RNG different amounts
-    * RNG is advanced after the battles ends (last action completed) twice.
-      1. To calculate item drop (Explained in later section)
-      2. To calculate stat growths. RNG is advanced 7 times (Once per each stat)
-         per level up per character.
-  8. Marco's Cup Game. Is usually advanced by 70-90(Game version dependent?)
+  7. Marco's Cup Game. Is usually advanced by 70-90. Will also revisit this.
+  8. After Barbarossa jumps off the balcony with Windy the screen starts
+     shaking. While the screen is shaking RNG advances at a rate of about 3.66
+     per frame. It's most likely calculating which direction the screen shakes and
+     maybe how far it shakes.
+
+### In Battle
+This is really complex and I don't understand everything yet. However, this is
+the most abusable and I have figured out some stuff that I'll write out here.
+
+##### Before the battle
+If it's a random encounter it advances by one to determine what encounter it is.
+
+##### During the battle
+Trying to run advances RNG by one. Let Go and Bribe (including failed bribe)
+don't advance RNG.
+
+**Universal**
+I'm gonna define **Fighter** as either enemy or party member to make this easier
+to explain. As an example, in a battle with McDohl vs 2 Kobolds there are 3
+Fighters. **Action** will refer to a fighters turn in the battle occuring.
+Defend counts as action, don't know how statuses such as paralysis or affect
+action.
+
+At the start of each turn RNG is always advances by 1. Then on each fighter's
+action, before the action is done, RNG advances by the number of fighters that
+haven't had their action yet (this includes the current fighter).
+
+As an example, let's use that same fight with McDohl and 2 Kobolds. To make the
+explanation easier, let's assume that all 3 Defend (I know that Kobolds can't
+defend.) Turn starts, RNG advances by 1. McDohl's action, RNG advances by
+3(McDohl + Kobold + Kobold.) First Kobold's turn, RNG advances by 2(current
+Kobold + remaining Kobold.) Remining Kobold goes, RNG advances by 1.
+
+**Attacks**
+RNG advances by a few RNG per regular attack, not sure on specifics. I assume
+there's a few calls to calculate miss or crit and damage roll. I think average
+RNG advancement here is 3.
+
+**Defend / Item**
+Actions like Defend or Medicine advance 0. However, using an item on someone
+affects turn order and that can affect RNG.
+
+**Runes**
+Runes are all kinda different. There's 2 kinds when it comes to RNG
+advancement, Set and random. Set spells always advance RNG by the same amount.
+Here's a list of known set spells and how much they advance RNG.
+
+**Set**
+  1. The Shredding (0)
+  2. Storm (0)
+  3. Firestorm (0)
+  4. Raging Blow (0)
+  5. Ball of Lightning (0)
+  6. Voice of Earth (0)
+  7. Angry Blow (6)
+  8. Dancing Flames (150)
+  9. Thunder God (476)
+
+**Random**
+  1. Flaming Arrow (~540)
+  2. Explosion (~1232)
+  3. Final Flame (~534)
+  4. Wind of Sleep (~304)
+  5. Shining Wind (~1320)
+  6. Earthquake (~1620)
+  7. Charm Arrow (~24600) This is not a typo
+  8. Deadly Fingertips (~1100)
+  9. Black Shadow (~5500) I've seen this range from about 5300 to 6800
+  10. Hell (~11000)
+  11. Storm (26 + 2 per enemy?) Most likely set just don't know formula yet.
+
+**Unites**
+Haven't tested really but the 3 I use in runs don't advance RNG much. These are:
+  1. Talisman Attack (Gremio & Pahn)
+  2. Master Pupil Attack (McDohl & Kai)
+  3. Wild Arrow Attack (Kirkis & Stallion)
+
+##### After the battle
+RNG is advanced after the battles ends (last action completed) twice.
+  1. To calculate item drop (Explained in later section)
+  2. To calculate stat growths. RNG is advanced 7 times (Once per each stat)
+     per level up per character.
+
+##### Other
+RNG never advances while you're inputting your actions with two exceptions:
+  1. Golden Hydra battle. Sometimes the heads roar or lunge at you. It seems
+     like RNG advances every few seconds to determine if it will a head will do
+     anything.
+  2. After Barbarossa jumps off with Windy the screen starts shaking. This was
+     mentioned earlier and still happens during battles. As a result, RNG is
+     advanced about 3.7 times per frame during battles (including menus)
+
+### Methods
+These are the methods used to determine the results of RNG based actions by the
+game. The PS1 processor doesn't support floating point arithmetic, so for
+multipliction and division the results are stored in two registers, mhi and mlo.
+For multiplication, mhi holds the first 32 bits and mlo holds the next 32 bits.
+For division, mflo stores the quotient and mhi stores the remainder. A division
+where we take the result as the quotient will be signified by `/`. A division
+where we take the result as the reminder will be signified by `%` aka modulo.
+
+You will also see `r2` mentioned quite a bit in these methods. This refers to
+the value stored in register 2 after each RNG call. It's used for most
+calculations.
 
 ###### RNG Call Method
 ```javascript
-// Since PS1 is a 32 bit system multiplication and division
-// sets registers mflo and mhi with the results
-// The & 0xFFFFFFFF simulates that
 // In some languages proper multiplication without loss of precision
 // requires custom implementation
 rng = ((rng * 0x41c64e6d) & 0xFFFFFFFF) + 0x3039;
@@ -89,9 +221,6 @@ return false;
 ```javascript
 // r2 is set in RNG call
 r3 = 0x7F;
-// Division works like multiplication in that it uses mflo and mhi registers
-// mflo = quotient
-// mhi = remainder
 // The below won't need the Math.floor if language doesn't autoconvert integers
 // when doing integer division
 r2 = Math.floor(r2/r3) & 0xFF;
