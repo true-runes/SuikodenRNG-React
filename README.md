@@ -140,7 +140,7 @@ Here's a list of known set spells and how much they advance RNG.
   8. Deadly Fingertips (~1100)
   9. Black Shadow (~5500) I've seen this range from about 5300 to 6800
   10. Hell (~11000)
-  11. Storm (26 + 2 per enemy?) Most likely set just don't know formula yet.
+  11. Rainstorm (26 + 2 per enemy?) Most likely set just don't know formula yet.
 
 ###### Unites
 Haven't tested really but the 3 I use in runs don't advance RNG much. These are:
