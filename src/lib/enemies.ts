@@ -15,10 +15,10 @@ export const enemies = {
         'parseString': '2 ClayDoll' },
       { 'name': '3 ClayDoll',
         'parseString': '3 ClayDoll' },
-      { 'name': '1 ClayDoll 1 Banshee',
-        'parseString': '1 ClayDoll 1 Banshee' },
-      { 'name': '1 ClayDoll 2 Banshee',
-        'parseString': '1 ClayDoll 2 Banshee' },
+      { 'name': '1 Banshee 1 ClayDoll ',
+        'parseString': '1 Banshee 1 ClayDoll ' },
+      { 'name': '2 Banshee 1 ClayDoll',
+        'parseString': '2 Banshee 1 ClayDoll' },
       { 'name': '3 RedElemental 1 ClayDoll',
         'parseString': '3 RedElemental 1 ClayDoll' },
       { 'name': '3 RedElemental 1 Banshee',
@@ -2408,9 +2408,9 @@ export const enemies = {
     },
     'areaType': 'World Map'
   },
-  'Scarleticia Castle': {
-    'name': 'Scarleticia Castle',
-    'encounterRate': 2,
+  'Scarleticia': {
+    'name': 'Scarleticia',
+    'encounterRate': 3,
     'encounters': [
       { 'name': '2 MadIvy',
         'parseString': '2 MadIvy' },
@@ -2421,7 +2421,9 @@ export const enemies = {
       { 'name': '6 Creeper',
         'parseString': '6 Creeper' },
       { 'name': '1 Nightmare',
-        'parseString': '1 Nightmare' }],
+        'parseString': '1 Nightmare' },
+      { 'name': '3 Creeper 1 Nightmare',
+        'parseString': '3 Creeper 1 Nightmare' }],
     'enemies': {
       'Creeper': {
         'bits': 600,
