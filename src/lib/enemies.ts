@@ -502,7 +502,12 @@ export const enemies = {
   'Gradys Mansion': {
     'name': 'Gradys Mansion',
     'encounterRate': 0,
-    'encounters': [],
+    'encounters': [
+      { 'name': '2 EmpireSoldier(sword)',
+        'parseString': '2 EmpireSoldier(sword#1)' },
+      { 'name': '3 EmpireSoldier(spear) 2 EmpireSoldier(bow) 1 EmpireCaptain',
+        'parseString': '3 EmpireSoldier(spear#1) 2 EmpireSoldier(bow#1) 1 EmpireCaptain' }
+    ],
     'enemies': {
       'EmpireCaptain': {
         'bits': 250,
@@ -531,25 +536,48 @@ export const enemies = {
           'lvl': 10
         }
       },
-      'EmpireSoldier(sabre#1)': {
-        'bits': 140,
-        'drops': [
-          {
-            'item': 'Headband',
-            'rate': 9
-          }
-        ],
+      'EmpireSoldier(sword#1)': {
+        'bits': 150,
+        'drops': [],
         'stats': {
-          'DEF': 5,
-          'HP': 50,
-          'LUK': 25,
-          'MGC': 12,
+          'DEF': 7,
+          'HP': 48,
+          'LUK': 12,
+          'MGC': 10,
           'PWR': 65,
-          'SKL': 55,
-          'SPD': 25,
+          'SKL': 40,
+          'SPD': 15,
           'lvl': 8
         }
-      }
+      },
+      'EmpireSoldier(bow#1)': {
+        'bits': 130,
+        'drops': [],
+        'stats': {
+          'DEF': 5,
+          'HP': 44,
+          'LUK': 17,
+          'MGC': 9,
+          'PWR': 60,
+          'SKL': 65,
+          'SPD': 33,
+          'lvl': 8
+        }
+      },
+      'EmpireSoldier(spear#1)': {
+        'bits': 100,
+        'drops': [],
+        'stats': {
+          'DEF': 7,
+          'HP': 55,
+          'LUK': 14,
+          'MGC': 8,
+          'PWR': 60,
+          'SKL': 55,
+          'SPD': 15,
+          'lvl': 8
+        }
+      },
     },
     'areaType': null
   },
