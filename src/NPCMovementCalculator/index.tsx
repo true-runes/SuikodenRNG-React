@@ -27,7 +27,7 @@ class NPCalcForm extends React.Component<RouteComponentProps<any>, State> {
     Object.keys(this.state).forEach((key) => {
       params.append(key, this.state[key]);
     });
-    this.props.history.push(`/npcalc/result?${params.toString()}`);
+    this.props.history.push(`/npc/result?${params.toString()}`);
   }
 
   render() {
