@@ -549,6 +549,7 @@ export const enemies = {
           "SKL": 55,
           "SPD": 25,
           "lvl": 8
+        }
       },
       "EmpireSoldier(bow#1)": {
         "bits": 130,
@@ -577,7 +578,7 @@ export const enemies = {
           "SPD": 15,
           "lvl": 8
         }
-      },
+      }
     },
     "areaType": null
   },
