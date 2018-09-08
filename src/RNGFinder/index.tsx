@@ -3,7 +3,7 @@ import AreaClass from '../lib/Area';
 import { FindRNGStatus as Status } from '../lib/interfaces';
 import DoubleListSelector from '../components/DoubleListSelector';
 import RNGFinderStatus from './Status';
-import { areaNames } from '../lib/lib';
+import { areaNamesWithRandomEncounters } from '../lib/lib';
 import { Container, Form, DropdownProps } from 'semantic-ui-react';
 
 let findRNGWorker = require('worker-loader!../lib/findRNGWorker.js');
@@ -26,7 +26,7 @@ interface State {
 export default class RNGFinderContainer extends React.Component<Props, State> {
   state = {
     rng: '0x12',
-    area: areaNames[0],
+    area: areaNamesWithRandomEncounters[0],
     fightList: [],
     status: {
       progress: 0,
@@ -97,7 +97,9 @@ export default class RNGFinderContainer extends React.Component<Props, State> {
           <Form.Dropdown
             label="Areas"
             placeholder="Area"
-            options={areaNames.map((name) => { return { key: name, value: name, text: name }; })}
+            options={areaNamesWithRandomEncounters.map(name =>
+              ({ key: name, value: name, text: this.props.areas[name].name })
+            )}
             value={this.state.area}
             onChange={this.handleAreaChange}
             search={true}

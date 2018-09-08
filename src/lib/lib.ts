@@ -30,7 +30,7 @@ export function initAreas(enemies: Areas): { [key: string]: AreaClass } {
   const areas = {};
   for (const area in enemies) {
     if (enemies.hasOwnProperty(area)) {
-      areas[area] = new AreaClass(area, enemies[area]);
+      areas[area] = new AreaClass(enemies[area].name, enemies[area]);
     }
   }
   return areas;
@@ -62,13 +62,12 @@ export function download(item, filename) {
 }
 */
 
-export const areaNames = [
+export const areaNamesWithRandomEncounters = [
   'Cave of the Past',
   'Dragon Knights Area',
   'Dragons Den',
   'Dwarves Trail',
   'Dwarves Vault',
-  'Gradys Mansion',
   'Great Forest',
   'Gregminster Area 1',
   'Gregminster Area 2',
@@ -76,8 +75,6 @@ export const areaNames = [
   'Kalekka',
   'Kalekka Area',
   'Kobold Village',
-  'Krazes Mansion',
-  'Lenankamp',
   'Lepants Mansion',
   'Lorimar Area',
   'Magicians Island',
@@ -88,11 +85,9 @@ export const areaNames = [
   'Neclords Castle',
   'Panna Yakuta Area',
   'Panna Yakuta',
-  'Rockland',
   'Scarleticia Area',
-  'Scarleticia Castle',
+  'Scarleticia',
   'Seek Valley',
-  'Seika',
   'Seika Area',
   'Shasarazade Fortress',
   'Soniere Prison',

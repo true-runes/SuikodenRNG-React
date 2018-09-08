@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AreaClass from '../lib/Area';
-import { areaNames, numToHexString } from '../lib/lib';
+import { areaNamesWithRandomEncounters, numToHexString } from '../lib/lib';
 import { Container, DropdownProps, Form } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps<any> {
@@ -22,7 +22,7 @@ class EncountersContainer extends React.Component<Props, State> {
     rng: numToHexString(0x12),
     iterations: 1000,
     partylevel: 0,
-    areas: ['Cave of the Past'],
+    areas: [],
   };
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -74,7 +74,9 @@ class EncountersContainer extends React.Component<Props, State> {
           <Form.Dropdown
             label="Areas"
             placeholder="Area"
-            options={areaNames.map((name) => { return { key: name, value: name, text: name }; })}
+            options={areaNamesWithRandomEncounters.map(name =>
+              ({ key: name, value: name, text: this.props.areas[name].name })
+            )}
             value={this.state.areas}
             onChange={this.handleAreaChange}
             multiple={true}
