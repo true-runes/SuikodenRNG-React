@@ -549,8 +549,35 @@ export const enemies = {
           "SKL": 55,
           "SPD": 25,
           "lvl": 8
+      },
+      "EmpireSoldier(bow#1)": {
+        "bits": 130,
+        "drops": [],
+        "stats": {
+          "DEF": 5,
+          "HP": 44,
+          "LUK": 17,
+          "MGC": 9,
+          "PWR": 60,
+          "SKL": 65,
+          "SPD": 33,
+          "lvl": 8
         }
-      }
+      },
+      "EmpireSoldier(spear#1)": {
+        "bits": 100,
+        "drops": [],
+        "stats": {
+          "DEF": 7,
+          "HP": 55,
+          "LUK": 14,
+          "MGC": 8,
+          "PWR": 60,
+          "SKL": 55,
+          "SPD": 15,
+          "lvl": 8
+        }
+      },
     },
     "areaType": null
   },

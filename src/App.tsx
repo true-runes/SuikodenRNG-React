@@ -5,6 +5,8 @@ import EncountersForm from './Encounters';
 import EncounterResult from './Encounters/Result';
 import SequenceForm from './Sequence';
 import SequenceResult from './Sequence/Result';
+import NPCForm from './NPCMovementCalculator/';
+import NPCResult from './NPCMovementCalculator/Result';
 import ItemDropsForm from './ItemDrops';
 import ItemDropsResult from './ItemDrops/Result';
 import RNGFinder from './RNGFinder';
@@ -48,6 +50,16 @@ class App extends React.Component {
           path="/sequence/result"
           exact={true}
           component={SequenceResult}
+        />
+        <Route
+          path="/npc"
+          exact={true}
+          component={NPCForm}
+        />
+        <Route
+          path="/npc/result"
+          exact={true}
+          component={NPCResult}
         />
         <Route
           path="/drops"

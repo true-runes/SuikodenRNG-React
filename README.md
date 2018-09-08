@@ -36,7 +36,7 @@ Now, onto RNG advancements.
       isn't made. Funnily enough, this leads to RNG advancing less the more
       often people move.
     * These advancements is applied when areas are loading as well. Which is why
-      (not) skipping the town text (Textbox with townname that appears when you enter
+      (not) skipping the town text (Textbox with town name that appears when you enter
       a town) is important for RNG manipulation.
     * Also advances during certain menus. During most text boxes and in your
       menu RNG doesn't advance even if there are moving people. However, people
@@ -49,7 +49,7 @@ Now, onto RNG advancements.
       your castle during story events.
     * A special and kind of important case: Gregminster at the start of the
       game. There's a few birds that hang out by the fountain in Gregminster.
-      They're actually treated as people for RNG advance RNG the same way. 
+      They're actually treated as people for RNG and advance RNG the same way. 
       However, if you get close to the birds they fly away and RNG stops 
       advancing for them. There's 7 moving people and 3 birds so after scaring 
       the birds RNG advances 30% slower. This is why you should always move left
@@ -70,7 +70,7 @@ Now, onto RNG advancements.
   6. During duels
     * Seems to advance by small amount (1-2) every turn. Likely just used to determine
       Kwanda's/Teo's action
-  7. Marco's Cup Game. Is usually advanced by 70-90. Will also revisit this.
+  7. Marco's Cup Game. Is usually advanced by 70-90 per game. Will also revisit this.
   8. After Barbarossa jumps off the balcony with Windy the screen starts
      shaking. While the screen is shaking RNG advances at a rate of about 3.66
      per frame. It's most likely calculating which direction the screen shakes and
