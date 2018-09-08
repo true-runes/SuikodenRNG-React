@@ -47,7 +47,7 @@ class NPCInfoResult extends React.Component<RouteComponentProps<any>, State> {
       let direction = '';
       if (move) {
         advance++;
-        direction = '?';
+        direction = 'Previous Movement';
         if (div32ulo(rng.getNext().rng2, 0x1fff) > 0) {
           direction = directionToString(div32ulo(rng.getNext(2).rng2, 0x1999));
           advance++;

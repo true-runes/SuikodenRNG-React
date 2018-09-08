@@ -49,7 +49,7 @@ class NPCalcForm extends React.Component<RouteComponentProps<any>, State> {
             value={this.state.iterations}
             onChange={this.handleInputChange}
           />
-          <Form.Button type="submit" content="Run NPC Calculator" primary={true}/>
+          <Form.Button type="submit" content="Calculate NPC Movements" primary={true}/>
         </Form>
       </Container>
     );
