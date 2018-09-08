@@ -33,7 +33,7 @@ class SequenceForm extends React.Component<RouteComponentProps<any>, State> {
   render() {
     return (
       <Container textAlign="center">
-        <Form onSubmit={this.handleSubmit}>
+        <Form size="large" onSubmit={this.handleSubmit}>
           <Form.Input
             label="Initial RNG Value"
             name="rng"
