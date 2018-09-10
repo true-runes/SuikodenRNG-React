@@ -3079,5 +3079,229 @@ export const enemies = {
       }
     },
     "areaType": "Dungeon"
+  },
+  "Bosses": {
+    "name": "Boss Fights",
+    "encounterRate": 0,
+      "encounters": [
+    { "name": "Golem",
+      "parseString": "1 Golem" },
+    { "name": "Zombie Dragon",
+      "parseString": "1 ZombieDragon" },
+    { "name": "Gigantes",
+      "parseString": "1 Gigantes" },
+    { "name": "Dragon",
+      "parseString": "1 Dragon" }
+    ],
+    "enemies": {
+      "Golem": {
+        "bits": 1500,
+        "drops": [
+          {
+            "item": "Medicine x6",
+            "rate": 15
+          }
+        ],
+        "stats": {
+          "DEF": 2,
+          "HP": 300,
+          "LUK": 20,
+          "MGC": 25,
+          "PWR": 40,
+          "SKL": 21,
+          "SPD": 17,
+          "lvl": 12
+        }
+      },
+      "QueenAnt": {
+        "bits": 2000,
+        "drops": [
+          {
+            "item": "Pointed Hat",
+            "rate": 10
+          }
+        ],
+        "stats": {
+          "DEF": 50,
+          "HP": 7100,
+          "LUK": 55,
+          "MGC": 55,
+          "PWR": 75,
+          "SKL": 25,
+          "SPD": 20,
+          "lvl": 15
+        }
+      },
+      "Varkas": {
+        "bits": 400,
+        "drops": [],
+        "stats": {
+          "DEF": 15,
+          "HP": 210,
+          "LUK": 16,
+          "MGC": 18,
+          "PWR": 76,
+          "SKL": 40,
+          "SPD": 27,
+          "lvl": 12
+        }
+      },
+      "Sydonia": {
+        "bits": 300,
+        "drops": [],
+        "stats": {
+          "DEF": 8,
+          "HP": 140,
+          "LUK": 19,
+          "MGC": 30,
+          "PWR": 67,
+          "SKL": 55,
+          "SPD": 42,
+          "lvl": 10
+        }
+      },
+      "ZombieDragon": {
+        "bits": 2000,
+        "drops": [
+          {
+            "item": "Lightning Rune",
+            "rate": 80
+          }
+        ],
+        "stats": {
+          "DEF": 35,
+          "HP": 3700,
+          "LUK": 40,
+          "MGC": 130,
+          "PWR": 175,
+          "SKL": 50,
+          "SPD": 65,
+          "lvl": 30
+        }
+      },
+      "Assassin": {
+        "bits": 400,
+        "drops": [],
+        "stats": {
+          "DEF": 9,
+          "HP": 2000,
+          "LUK": 19,
+          "MGC": 30,
+          "PWR": 120,
+          "SKL": 60,
+          "SPD": 35,
+          "lvl": 18
+        }
+      },
+      "Gigantes": {
+        "bits": 3000,
+        "drops": [
+          {
+            "item": "Goldlet",
+            "rate": 6
+          }
+        ],
+        "stats": {
+          "DEF": 25,
+          "HP": 3900,
+          "LUK": 55,
+          "MGC": 120,
+          "PWR": 260,
+          "SKL": 60,
+          "SPD": 80,
+          "lvl": 35
+        }
+      },
+      "Dragon": {
+        "bits": 3500,
+        "drops": [
+          {
+            "item": "Half Armor",
+            "rate": 80
+          }
+        ],
+        "stats": {
+          "DEF": 35,
+          "HP": 6000,
+          "LUK": 65,
+          "MGC": 150,
+          "PWR": 250,
+          "SKL": 60,
+          "SPD": 40,
+          "lvl": 40
+        }
+      },
+      "Neclord": {
+        "bits": 10000,
+        "drops": [],
+        "stats": {
+          "DEF": 80,
+          "HP": 7500,
+          "LUK": 30,
+          "MGC": 275,
+          "PWR": 450,
+          "SKL": 100,
+          "SPD": 75,
+          "lvl": 55
+        }
+      },
+      "CrystalCore": {
+        "bits": 70000,
+        "drops": [],
+        "stats": {
+          "DEF": 90,
+          "HP": 5000,
+          "LUK": 80,
+          "MGC": 275,
+          "PWR": 350,
+          "SKL": 70,
+          "SPD": 65,
+          "lvl": 60
+        }
+      },
+      "ShellVenus": {
+        "bits": 100000,
+        "drops": [],
+        "stats": {
+          "DEF": 40,
+          "HP": 15000,
+          "LUK": 100,
+          "MGC": 350,
+          "PWR": 470,
+          "SKL": 80,
+          "SPD": 80,
+          "lvl": 65
+        }
+      },
+      "SonyaShulen": {
+        "bits": 1500,
+        "drops": [],
+        "stats": {
+          "DEF": 110,
+          "HP": 6000,
+          "LUK": 120,
+          "MGC": 390,
+          "PWR": 480,
+          "SKL": 125,
+          "SPD": 160,
+          "lvl": 58
+        }
+      },
+      "AinGide": {
+        "bits": 2000,
+        "drops": [],
+        "stats": {
+          "DEF": 120,
+          "HP": 8000,
+          "LUK": 90,
+          "MGC": 410,
+          "PWR": 500,
+          "SKL": 80,
+          "SPD": 130,
+          "lvl": 60
+        }
+      }
+    },
+    "areaType": null
   }
 };
