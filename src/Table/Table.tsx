@@ -12,6 +12,18 @@ interface Props {
 }
 
 const Table = (props: Props) => {
+  const columns: Column[] = props.columns.reduce(
+    (accumulator: Column[], column: Column) => {
+      // Undefined show should still show columns.
+      // Only explicitly hidden columns will not be shown.
+      if (column.show !== false) {
+        accumulator.push(column);
+      }
+      return accumulator;
+    },
+    []);
+  const columnsWidthRatio: number = props.width /
+    columns.reduce((total, column) => (total += column.width), 0);
   return (
     <VirtTable
       headerHeight={30}
@@ -31,26 +43,16 @@ const Table = (props: Props) => {
       scrollToAlignment="start"
       width={props.width}
     >
-      {props.columns.reduce(
-        (accumulator: Column[], column: Column) => {
-          // Undefined show should still show columns.
-          // Only explicitly hidden columns will not be shown.
-          if (column.show !== false) {
-            accumulator.push(column);
-          }
-          return accumulator;
-        },
-        []).map((column: Column) => {
-          return (
-            <VirtColumn
-              key={column.key}
-              label={column.label}
-              dataKey={column.key}
-              width={column.width}
-            />
-          );
-        })
-      }
+      {columns.map((column: Column) => {
+        return (
+          <VirtColumn
+            key={column.key}
+            label={column.label}
+            dataKey={column.key}
+            width={columnsWidthRatio * column.width}
+          />
+        );
+      })}
     </VirtTable>
   );
 };
