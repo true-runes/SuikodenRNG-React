@@ -31,7 +31,7 @@ class EncountersGenerator extends React.Component<Props, State> {
     });
 
     const encounters = areas
-      .map((area) => area.generateEncounters(new RNG(rng), iterations, partylevel))
+      .map(area => area.generateEncounters(new RNG(rng), iterations, partylevel))
       .reduce(
         (fights: any[], areaFights) => {
           return fights.concat(areaFights);

@@ -35,7 +35,7 @@ const Table = (props: Props) => {
       }}
       rowCount={props.data.length}
       rowGetter={({ index }) => props.data[index]}
-      rowHeight={30}
+      rowHeight={60}
       rowStyle={({ index }) => (props.currentRow !== undefined && props.currentRow === index
         ? { backgroundColor: 'yellow' }
         : {})}
@@ -46,6 +46,17 @@ const Table = (props: Props) => {
       {columns.map((column: Column) => {
         return (
           <VirtColumn
+            cellRenderer={({ cellData }) => {
+              if (cellData === null) {
+                return '';
+              }
+
+              if (React.isValidElement(cellData)) {
+                return cellData;
+              }
+
+              return String(cellData);
+            }}
             key={column.key}
             label={column.label}
             dataKey={column.key}

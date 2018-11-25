@@ -30,6 +30,7 @@ const RunAssistantTable = (props: Props) => {
   const columns: Column[] = [
     { label: 'Area', key: 'area', width: 200 },
     { label: 'Enemy Group', key: 'enemyGroup', width: 300 },
+    { label: 'Enemy Group', key: 'enemyGroupImage', width: 300 },
     { label: 'Index', key: 'index', width: 100 },
     { label: 'Run', key: 'run', width: 100 },
     { label: 'Encounter RNG', key: 'startRNG', width: 150 },
@@ -40,6 +41,15 @@ const RunAssistantTable = (props: Props) => {
   const fights = props.fights.map(fight => ({
       ...fight,
       enemyGroup: fight.enemyGroup.name,
+      enemyGroupImage: (
+        <div className="enemyGroupImage">
+          {
+            fight.enemyGroup.enemies.map((enemy, index) => (
+              <img className="enemyImage" key={index} src={enemy.img}/>
+            ))
+          }
+        </div>
+      ),
       run: fight.run ? 'Run' : 'Fail',
       startRNG: numToHexString(fight.startRNG),
       battleRNG: numToHexString(fight.battleRNG)
@@ -51,6 +61,7 @@ const RunAssistantTable = (props: Props) => {
         currentRow={props.currentRow}
         columns={columns}
         data={fights}
+        filter={false}
         onRowClick={(index: number) => props.selectFight(index)}
       />
     </Container>

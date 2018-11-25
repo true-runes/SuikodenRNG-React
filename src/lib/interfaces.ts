@@ -52,6 +52,7 @@ export interface Enemy {
   bits: number;
   drops: Drop[];
   stats: Stats;
+  img?: string;
 }
 
 export interface Drop {

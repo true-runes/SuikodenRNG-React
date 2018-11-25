@@ -11,6 +11,7 @@ interface Props {
   columns: Column[];
   currentRow?: number;
   onRowClick?: (index: number) => any;
+  filter?: boolean;
 }
 
 export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender?: number[] }> {
@@ -38,10 +39,11 @@ export default class TableContainer extends React.Component<Props, { columns: Co
         {({ height, width }) => (
           <Container>
             <div style={{ display: 'flex', 'justifyContent': 'space-between', width, height: 38 }}>
-              <Filter
-                data={this.props.data}
-                setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
-              />
+              { this.props.filter !== false ?
+                <Filter
+                  data={this.props.data}
+                  setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
+                /> : null }
               <ColumnDropdown
                 columns={this.state.columns}
                 toggleColumn={(columnIndex => {

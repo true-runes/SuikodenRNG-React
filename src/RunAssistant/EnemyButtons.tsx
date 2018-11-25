@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Container, Segment } from 'semantic-ui-react';
+import EnemyButton from './EnemyButton';
 import { connect } from 'react-redux';
 import { findFight, findMatch } from './actions';
 import { getCurrentEnemies } from './reducers';
@@ -23,6 +24,7 @@ interface Props {
   findFight: (name: string) => any;
   findMatch: (name: string) => any;
   pattern: boolean;
+  useImages?: boolean;
 }
 
 const evenColumnDiv: StyledFunction<{ columns: number} & React.HTMLProps<HTMLDivElement>> = styled.div;
@@ -68,13 +70,16 @@ const EnemyButtonContainer = (props: Props) => {
                 vertical={true}
                 key={index}
               >
-                {enemiesGroup.map((enemy) => {
+                {enemiesGroup.map((enemyGroup) => {
                   return (
-                    <Button
-                      key={enemy.name}
-                      style={{ width: '100%', margin: '2px 0', flex: '0 0 auto' }}
-                      content={enemy.name}
-                      onClick={() => props.pattern ? props.findMatch(enemy.name) : props.findFight(enemy.name)}
+                    <EnemyButton
+                      key={enemyGroup.name}
+                      useImages={props.useImages}
+                      enemyGroup={enemyGroup}
+                      onClick={() => props.pattern
+                        ? props.findMatch(enemyGroup.name)
+                        : props.findFight(enemyGroup.name)
+                      }
                     />
                   );
                 })}

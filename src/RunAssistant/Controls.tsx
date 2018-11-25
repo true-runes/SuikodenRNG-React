@@ -5,6 +5,7 @@ import EnemyButtonContainer from './EnemyButtons';
 import { RunAssistState } from './interfaces';
 import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
 import { findNextFight, getCurrentArea, getCurrentFight, getFight } from './reducers';
+import styled from 'styled-components';
 
 const mapStateToProps = (state: RunAssistState) => {
   return {
@@ -48,8 +49,8 @@ class Controls extends React.Component<any, any> {
   render() {
     const { areas, currentArea } = this.props;
     return (
-      <Container>
-        <EnemyButtonContainer pattern={this.state.pattern} />
+      <Container className={this.props.className}>
+        <EnemyButtonContainer useImages={false} pattern={this.state.pattern} />
         <Segment style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Dropdown
             label="Areas"
@@ -82,4 +83,7 @@ class Controls extends React.Component<any, any> {
 
 const ConnectedControls = connect(mapStateToProps, mapDispatchToProps)(Controls);
 
-export default ConnectedControls;
+const StyledControls = styled(ConnectedControls)`
+`;
+
+export default StyledControls;
