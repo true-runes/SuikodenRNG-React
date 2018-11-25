@@ -11,8 +11,9 @@ interface State {
 
 interface NPCInfo {
   rng: string;
+  index: number;
+  npc: number;
   direction: string;
-  advance: number;
 }
 
 function directionToString(num: number): string {
@@ -40,20 +41,26 @@ class NPCInfoResult extends React.Component<RouteComponentProps<any>, State> {
     const params: URLSearchParams = new URLSearchParams(this.props.location.search);
     const rng: RNG = new RNG(parseInt(params.get('rng') as string));
     const iterations: number = parseInt(params.get('iterations') as string);
+    const npcAmount: number = parseInt(params.get('npcs') as string);
     const result: NPCInfo[] = [];
+    let currentNPC: number = 0;
     for (let i = 0; i < iterations; i++) {
       const move: boolean = rng.getRNG2() < 0xcb;
-      let advance: number = 0;
       let direction = '';
+      const index: number = i;
       if (move) {
-        advance++;
+        rng.next();
+        i++;
         direction = 'Previous Movement';
-        if (div32ulo(rng.getNext().rng2, 0x1fff) > 0) {
-          direction = directionToString(div32ulo(rng.getNext(2).rng2, 0x1999));
-          advance++;
+        if (div32ulo(rng.getRNG2(), 0x1fff) > 0) {
+          rng.next();
+          i++;
+          direction = directionToString(div32ulo(rng.getRNG2(), 0x1999));
         }
+        result.push({ index, rng: numToHexString(rng.getRNG()), direction, npc: currentNPC + 1 });
+      } else {
+        currentNPC = (currentNPC + 1) % npcAmount;
       }
-      result.push({ rng: numToHexString(rng.getRNG()), direction, advance });
       rng.next();
     }
     this.setState({ NPCInfo: result });

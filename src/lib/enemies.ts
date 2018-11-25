@@ -408,7 +408,7 @@ export const enemies = {
         "parseString": "3 DeathBoar" },
       { "name": "3 Crimson Dwarf 1 Red Machine",
         "parseString": "3 CrimsonDwarf 1 DeathMachine(sword)" },
-      { "name": "3 Crimson Dwarf 2 Re dMachine",
+      { "name": "3 Crimson Dwarf 2 Red Machine",
         "parseString": "3 CrimsonDwarf 2 DeathMachine(sword)" },
       { "name": "3 Crimson Dwarf 3 Red Machine",
         "parseString": "3 CrimsonDwarf 3 DeathMachine(sword)" }],
@@ -2375,7 +2375,7 @@ export const enemies = {
         "bits": 600,
         "drops": [
           {
-            "item": "Eart Rune",
+            "item": "Earth Rune",
             "rate": 5
           }
         ],

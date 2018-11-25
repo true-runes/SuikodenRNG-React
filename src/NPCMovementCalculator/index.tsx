@@ -12,6 +12,7 @@ class NPCalcForm extends React.Component<RouteComponentProps<any>, State> {
   state = {
     rng: numToHexString(0x12),
     iterations: 1000,
+    npcs: 1
   };
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -47,6 +48,14 @@ class NPCalcForm extends React.Component<RouteComponentProps<any>, State> {
             step="500"
             type="number"
             value={this.state.iterations}
+            onChange={this.handleInputChange}
+          />
+          <Form.Input
+            label="Number of NPCs"
+            name="npcs"
+            step="1"
+            type="number"
+            value={this.state.npcs}
             onChange={this.handleInputChange}
           />
           <Form.Button type="submit" content="Calculate NPC Movements" primary={true}/>
