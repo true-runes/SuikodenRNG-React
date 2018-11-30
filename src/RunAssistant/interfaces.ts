@@ -7,3 +7,12 @@ export interface RunAssistState {
   index: number;
   pattern: number[];
 }
+
+export interface ConfigState {
+  useImages: boolean;
+}
+
+export interface State {
+  RunAssistant: RunAssistState;
+  config: ConfigState;
+}

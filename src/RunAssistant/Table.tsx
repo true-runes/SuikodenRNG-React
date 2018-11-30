@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Column } from '../Table/interfaces';
 import { Container } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { RunAssistState } from './interfaces';
+import { State as ReducerState } from './interfaces';
 import { Fight } from '../lib/interfaces';
 import { numToHexString } from '../lib/lib';
-import { selectFight } from './actions';
-import { getCurrentFights } from './reducers';
+import { selectFight } from './actions/RunAssistant';
+import { getCurrentFights } from './reducers/RunAssistant';
 import VirtTable from '../Table';
 
 interface Props {
@@ -15,12 +15,10 @@ interface Props {
   selectFight: (index: number) => any;
 }
 
-const mapStateToProps = (state: RunAssistState) => {
-  return {
-    fights: getCurrentFights(state),
-    currentRow: state.index
-  };
-};
+const mapStateToProps = (state: ReducerState) => ({
+  fights: getCurrentFights(state.RunAssistant),
+  currentRow: state.RunAssistant.index
+});
 
 const mapDispatchToProps = {
   selectFight

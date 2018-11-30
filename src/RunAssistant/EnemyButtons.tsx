@@ -2,17 +2,16 @@ import * as React from 'react';
 import { Button, Container, Segment } from 'semantic-ui-react';
 import EnemyButton from './EnemyButton';
 import { connect } from 'react-redux';
-import { findFight, findMatch } from './actions';
-import { getCurrentEnemies } from './reducers';
-import { RunAssistState } from './interfaces';
+import { findFight, findMatch } from './actions/RunAssistant';
+import { getCurrentEnemies } from './reducers/RunAssistant';
+import { State as ReducerState } from './interfaces';
 import { EnemyGroupData } from '../lib/interfaces';
 import styled, { StyledFunction } from 'styled-components';
 
-const mapStateToProps = (state: RunAssistState) => {
-  return {
-    enemies: getCurrentEnemies(state),
-  };
-};
+const mapStateToProps = (state: ReducerState) => ({
+  enemies: getCurrentEnemies(state.RunAssistant),
+  useImages: state.config.useImages
+});
 
 const mapDispatchToProps = {
   findFight,
@@ -24,7 +23,7 @@ interface Props {
   findFight: (name: string) => any;
   findMatch: (name: string) => any;
   pattern: boolean;
-  useImages?: boolean;
+  useImages: boolean;
 }
 
 const evenColumnDiv: StyledFunction<{ columns: number} & React.HTMLProps<HTMLDivElement>> = styled.div;

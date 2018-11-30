@@ -2,22 +2,21 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, Checkbox, Container, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
 import EnemyButtonContainer from './EnemyButtons';
-import { RunAssistState } from './interfaces';
-import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions';
-import { findNextFight, getCurrentArea, getCurrentFight, getFight } from './reducers';
+import { State as ReducerState } from './interfaces';
+import { jumpRNG, nextFight, previousFight, findFight, switchArea } from './actions/RunAssistant';
+import { findNextFight, getCurrentArea, getCurrentFight, getFight } from './reducers/RunAssistant';
+import ConfigModal from './ConfigModal';
 import styled from 'styled-components';
 
-const mapStateToProps = (state: RunAssistState) => {
-  return {
-    areas: state.areas.map((area: any) => area.name),
-    currentArea: getCurrentArea(state).name,
-    findNextFight: () => {
-      const index: number = findNextFight(state);
-      return index > -1 ? getFight(state, index) : null;
-    },
-    getCurrentFight: () => getCurrentFight(state)
-  };
-};
+const mapStateToProps = (state: ReducerState) => ({
+  areas: state.RunAssistant.areas.map((area: any) => area.name),
+  currentArea: getCurrentArea(state.RunAssistant).name,
+  findNextFight: () => {
+    const index: number = findNextFight(state.RunAssistant);
+    return index > -1 ? getFight(state.RunAssistant, index) : null;
+  },
+  getCurrentFight: () => getCurrentFight(state.RunAssistant)
+});
 
 const mapDispatchToProps = {
   jumpRNG,
@@ -50,7 +49,7 @@ class Controls extends React.Component<any, any> {
     const { areas, currentArea } = this.props;
     return (
       <Container className={this.props.className}>
-        <EnemyButtonContainer useImages={false} pattern={this.state.pattern} />
+        <EnemyButtonContainer pattern={this.state.pattern} />
         <Segment style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Dropdown
             label="Areas"
@@ -68,6 +67,7 @@ class Controls extends React.Component<any, any> {
             checked={this.state.pattern}
             onChange={() => this.setState(prevState => ({ pattern: !this.state.pattern }))}
           />
+          <ConfigModal trigger={<Button>Config</Button>}/>
           <span style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}>
             <Button content="+100" onClick={() => this.props.jumpRNG(100)}/>
             <Button content="+500" onClick={() => this.props.jumpRNG(500)}/>
@@ -83,7 +83,6 @@ class Controls extends React.Component<any, any> {
 
 const ConnectedControls = connect(mapStateToProps, mapDispatchToProps)(Controls);
 
-const StyledControls = styled(ConnectedControls)`
-`;
+const StyledControls = styled(ConnectedControls)``;
 
 export default StyledControls;

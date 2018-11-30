@@ -36,19 +36,21 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       ? parseInt(params.get('index') as string)
       : 0;
     const initialState = {
-      currentArea: 0,
-      areas: areas.map((area: AreaClass) => {
-        return {
-          name: area.name,
-          enemies: area.encounterTable.map((group) => {
-            const { name, enemies, champVal } = group;
-            return { name, enemies, champVal };
-          })
-        };
-      }),
-      fightsList,
-      index: index < fightsList[0].length ? index : 0,
-      pattern: []
+      RunAssistant: {
+        currentArea: 0,
+        areas: areas.map((area: AreaClass) => {
+          return {
+            name: area.name,
+            enemies: area.encounterTable.map((group) => {
+              const { name, enemies, champVal } = group;
+              return { name, enemies, champVal };
+            })
+          };
+        }),
+        fightsList,
+        index: index < fightsList[0].length ? index : 0,
+        pattern: []
+      }
     };
     this.state = { store: createStore(reducer, initialState, applyMiddleware(logger)) };
   }
