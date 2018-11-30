@@ -35,6 +35,7 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
     const index: number = params.get('index') !== null
       ? parseInt(params.get('index') as string)
       : 0;
+
     const initialState = {
       RunAssistant: {
         currentArea: 0,

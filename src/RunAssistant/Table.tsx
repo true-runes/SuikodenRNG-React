@@ -59,7 +59,8 @@ const RunAssistantTable = (props: Props) => {
         currentRow={props.currentRow}
         columns={columns}
         data={fights}
-        filter={false}
+        filter={true}
+        filterFromData={['enemyGroupImage']}
         onRowClick={(index: number) => props.selectFight(index)}
       />
     </Container>

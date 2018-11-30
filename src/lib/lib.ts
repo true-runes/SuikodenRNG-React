@@ -36,6 +36,16 @@ export function initAreas(enemies: Areas): { [key: string]: AreaClass } {
   return areas;
 }
 
+export function filterPropertiesFromObject(obj: {}, keys: [string]) {
+  let newObj = {};
+  Object.keys(obj).forEach(key => {
+    if (keys.indexOf(key) === -1) {
+      newObj[key] = obj[key];
+    }
+  });
+  return newObj;
+}
+
 /*
 export function fillAreaSelect(Areas: IAreas): void {
   const areaSelect = $(`#${IDs.AreaSelect}`);

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
+import { Container } from 'semantic-ui-react';
 import { Column } from './interfaces';
 import Table from './Table';
 import Filter from './Filter';
 import ColumnDropdown from './ColumnDropdown';
-import { Container } from 'semantic-ui-react';
+import { filterPropertiesFromObject } from '../lib/lib';
 
 interface Props {
   data: {}[];
@@ -12,6 +13,7 @@ interface Props {
   currentRow?: number;
   onRowClick?: (index: number) => any;
   filter?: boolean;
+  filterFromData?: [string];
 }
 
 export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender?: number[] }> {
@@ -41,7 +43,11 @@ export default class TableContainer extends React.Component<Props, { columns: Co
             <div style={{ display: 'flex', 'justifyContent': 'space-between', width, height: 38 }}>
               { this.props.filter !== false ?
                 <Filter
-                  data={this.props.data}
+                  data={
+                    this.props.filterFromData !== undefined ?
+                    this.props.data.map(row => filterPropertiesFromObject(row, this.props.filterFromData as [string])) :
+                    this.props.data
+                  }
                   setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
                 /> : null }
               <ColumnDropdown
