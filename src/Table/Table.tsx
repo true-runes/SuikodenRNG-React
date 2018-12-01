@@ -7,6 +7,7 @@ interface Props {
   columns: Column[];
   height: number;
   width: number;
+  rowHeight: number;
   currentRow?: number;
   onRowClick?: (index: number) => any;
 }
@@ -35,7 +36,7 @@ const Table = (props: Props) => {
       }}
       rowCount={props.data.length}
       rowGetter={({ index }) => props.data[index]}
-      rowHeight={60}
+      rowHeight={props.rowHeight}
       rowStyle={({ index }) => (props.currentRow !== undefined && props.currentRow === index
         ? { backgroundColor: 'yellow' }
         : {})}

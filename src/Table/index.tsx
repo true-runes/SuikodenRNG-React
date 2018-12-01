@@ -14,6 +14,7 @@ interface Props {
   onRowClick?: (index: number) => any;
   filter?: boolean;
   filterFromData?: [string];
+  rowHeight?: number;
 }
 
 export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender?: number[] }> {
@@ -65,6 +66,7 @@ export default class TableContainer extends React.Component<Props, { columns: Co
               data={data}
               height={height - 38}
               width={width}
+              rowHeight={this.props.rowHeight || 30}
             />
           </Container>
         )}
