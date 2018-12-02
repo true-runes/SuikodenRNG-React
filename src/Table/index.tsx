@@ -37,6 +37,9 @@ export default class TableContainer extends React.Component<Props, { columns: Co
       return this.props.data[rowIndex];
     }) : this.props.data;
 
+    const dataForFilter = this.props.data.map(row =>
+      filterPropertiesFromObject(row, this.props.filterFromData as [string]));
+
     return (
       <AutoSizer>
         {({ height, width }) => (
@@ -46,7 +49,7 @@ export default class TableContainer extends React.Component<Props, { columns: Co
                 <Filter
                   data={
                     this.props.filterFromData !== undefined ?
-                    this.props.data.map(row => filterPropertiesFromObject(row, this.props.filterFromData as [string])) :
+                    dataForFilter :
                     this.props.data
                   }
                   setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
