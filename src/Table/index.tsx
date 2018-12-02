@@ -5,7 +5,7 @@ import { Column } from './interfaces';
 import Table from './Table';
 import Filter from './Filter';
 import ColumnDropdown from './ColumnDropdown';
-import { filterPropertiesFromObject } from '../lib/lib';
+import { arraysEqual, filterPropertiesFromObject } from '../lib/lib';
 
 interface Props {
   data: {}[];
@@ -17,25 +17,37 @@ interface Props {
   rowHeight?: number;
 }
 
-export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender?: number[] }> {
+const createDefaultRowsToRender = (data => data.map((row, index) => index));
+
+export default class TableContainer extends React.Component<Props, { columns: Column[], rowsToRender: number[] }> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      rowsToRender: undefined,
+      rowsToRender: createDefaultRowsToRender(props.data),
       columns: props.columns
     };
   }
 
   componentWillReceiveProps(prevProps: Props) {
     if (prevProps.data !== this.props.data) {
-      this.setState({ rowsToRender: undefined });
+      this.setState({ rowsToRender: createDefaultRowsToRender(this.props.data) });
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: any) {
+    const prevData: Props['data'] = this.props.filterFromData
+      ? prevProps.data.map(row => filterPropertiesFromObject(row, this.props.filterFromData as [string]))
+      : prevProps.data;
+    const curData: Props['data'] = this.props.filterFromData
+      ? this.props.data.map(row => filterPropertiesFromObject(row, this.props.filterFromData as [string]))
+      : this.props.data;
+    if (!arraysEqual(prevData, curData)) {
+      this.setState({ rowsToRender: createDefaultRowsToRender(this.props.data) });
     }
   }
 
   render() {
-    const data = this.state.rowsToRender ? (this.state.rowsToRender as number[]).map((rowIndex) => {
-      return this.props.data[rowIndex];
-    }) : this.props.data;
+    const data = this.state.rowsToRender.map(rowIndex => this.props.data[rowIndex]);
 
     const dataForFilter = this.props.data.map(row =>
       filterPropertiesFromObject(row, this.props.filterFromData as [string]));
@@ -52,7 +64,10 @@ export default class TableContainer extends React.Component<Props, { columns: Co
                     dataForFilter :
                     this.props.data
                   }
-                  setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
+                  setRowsToRender={(rows: number[]) => {
+                    console.log('Updating rowsToRender');
+                    this.setState({ rowsToRender: rows });
+                  }}
                 /> : null }
               <ColumnDropdown
                 columns={this.state.columns}

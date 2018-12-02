@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Input } from 'semantic-ui-react';
 import SearchApi from 'js-worker-search';
+import { arraysEqual } from '../lib/lib';
 
 interface Props {
   data: {}[];
@@ -11,6 +12,7 @@ interface State {
   searchApi: any;
   filter: string;
   filtering: boolean;
+
 }
 
 export default class Filter extends React.Component<Props, State> {
@@ -27,11 +29,13 @@ export default class Filter extends React.Component<Props, State> {
     this.indexData(this.props.data);
   }
 
-  componentWillReceiveProps(nextProps: { data: {}[] }) {
-    if (this.props.data !== nextProps.data) {
+  componentDidUpdate(prevProps: any) {
+    if (!arraysEqual(this.props.data, prevProps.data)) {
+      console.log('Data changed');
       this.state.searchApi._search._worker.terminate();
       this.setState({ searchApi: new SearchApi({ tokenizePattern: /,/ }) }, () => {
-        this.indexData(nextProps.data);
+        this.indexData(this.props.data);
+        console.log('Calling filter');
         this.filter();
       });
     }
@@ -65,9 +69,10 @@ export default class Filter extends React.Component<Props, State> {
         placeholder="Filter"
         loading={this.state.filtering}
         type="text"
-        onChange={(e: React.FormEvent<HTMLInputElement>) =>
-          this.setState({ filter: e.currentTarget.value }, () => this.filter())
-        }
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          console.log('Input changed');
+          this.setState({ filter: e.currentTarget.value }, () => this.filter());
+        }}
         value={this.state.filter}
       />
     );

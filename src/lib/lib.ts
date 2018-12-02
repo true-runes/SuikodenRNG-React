@@ -46,6 +46,26 @@ export function filterPropertiesFromObject(obj: {}, keys: [string]) {
   return newObj;
 }
 
+export function arraysEqual(ar1: any[], ar2: any[]): boolean {
+  if (ar1.length !== ar2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < ar1.length; i++)  {
+    if (typeof ar1[i] !== typeof ar2[i]) {
+      return false;
+    }
+
+    if (typeof ar1[i] === 'object') {
+      if (JSON.stringify(ar1[i]) !== JSON.stringify(ar2[i])) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 /*
 export function fillAreaSelect(Areas: IAreas): void {
   const areaSelect = $(`#${IDs.AreaSelect}`);
