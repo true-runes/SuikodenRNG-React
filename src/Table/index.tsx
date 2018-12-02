@@ -49,8 +49,10 @@ export default class TableContainer extends React.Component<Props, { columns: Co
   render() {
     const data = this.state.rowsToRender.map(rowIndex => this.props.data[rowIndex]);
 
-    const dataForFilter = this.props.data.map(row =>
-      filterPropertiesFromObject(row, this.props.filterFromData as [string]));
+    const dataForFilter = this.props.filterFromData ?
+      this.props.data.map(row =>
+        filterPropertiesFromObject(row, this.props.filterFromData as [string])) :
+      this.props.data;
 
     return (
       <AutoSizer>
@@ -64,10 +66,7 @@ export default class TableContainer extends React.Component<Props, { columns: Co
                     dataForFilter :
                     this.props.data
                   }
-                  setRowsToRender={(rows: number[]) => {
-                    console.log('Updating rowsToRender');
-                    this.setState({ rowsToRender: rows });
-                  }}
+                  setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
                 /> : null }
               <ColumnDropdown
                 columns={this.state.columns}
