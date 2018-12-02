@@ -36,6 +36,9 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       ? parseInt(params.get('index') as string)
       : 0;
 
+    let config = window.localStorage.getItem('config');
+    config = config === null ? undefined : JSON.parse(config);
+
     const initialState = {
       RunAssistant: {
         currentArea: 0,
@@ -51,7 +54,8 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
         fightsList,
         index: index < fightsList[0].length ? index : 0,
         pattern: []
-      }
+      },
+      config: config
     };
     this.state = { store: createStore(reducer, initialState, applyMiddleware(logger)) };
   }

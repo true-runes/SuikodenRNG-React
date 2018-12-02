@@ -21,11 +21,11 @@ const initialState: State = {
 
 export default handleActions(
   {
-    CHANGE_USE_IMAGES: (state: State, action) => {
-      return { ...state, useImages: action.useImages };
-    },
-    CHANGE_COLUMN_VISIBILITY: (state: State, action) => {
-      return {
+    CHANGE_USE_IMAGES: (state: State, action) => (
+      { ...state, useImages: action.useImages }
+    ),
+    CHANGE_COLUMN_VISIBILITY: (state: State, action) => (
+      {
         ...state,
         columns: state.columns.map((column, index) => {
           if (index !== action.index) {
@@ -33,10 +33,11 @@ export default handleActions(
           }
           return { ...column, show: action.show };
         })
-      };
-    },
-    UPDATE_TABLE_ROW_HEIGHT: (state: State, action) => {
-      return { ...state, table: { ...state.table, rowHeight: action.height } };
-    }
+      }
+    ),
+    UPDATE_TABLE_ROW_HEIGHT: (state: State, action) => (
+      { ...state, table: { ...state.table, rowHeight: action.height } }
+    ),
+    RESET_TO_DEFAULT: (state: State, action) => initialState
   },
   initialState);

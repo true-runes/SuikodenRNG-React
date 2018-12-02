@@ -19,3 +19,7 @@ export const updateTableRowHeight = (height: number) => ({
   type: 'UPDATE_TABLE_ROW_HEIGHT',
   height
 });
+
+export const resetToDefault = () => ({
+  type: 'RESET_TO_DEFAULT'
+});

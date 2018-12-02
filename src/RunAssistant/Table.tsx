@@ -30,7 +30,6 @@ const mapDispatchToProps = {
 
 const RunAssistantTable = (props: Props) => {
   const columns: Column[] =  props.columns;
-  console.log(columns);
   const fights = props.fights.map(fight => ({
       ...fight,
       enemyGroup: fight.enemyGroup.name,
