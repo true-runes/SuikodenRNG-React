@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { Container } from 'semantic-ui-react';
-import { Column } from './interfaces';
+import { Column, RowStyle } from './interfaces';
 import Table from './Table';
 import Filter from './Filter';
 import ColumnDropdown from './ColumnDropdown';
@@ -14,7 +14,9 @@ interface Props {
   onRowClick?: (index: number) => any;
   filter?: boolean;
   filterFromData?: [string];
+  headerHeight?: number;
   rowHeight?: number;
+  rowStyle?: RowStyle;
 }
 
 const createDefaultRowsToRender = (data => data.map((row, index) => index));
@@ -64,10 +66,7 @@ export default class TableContainer extends React.Component<Props, { columns: Co
                     dataForFilter :
                     this.props.data
                   }
-                  setRowsToRender={(rows: number[]) => {
-                    console.log('Updating rowsToRender');
-                    this.setState({ rowsToRender: rows });
-                  }}
+                  setRowsToRender={(rows: number[]) => this.setState({ rowsToRender: rows })}
                 /> : null }
               <ColumnDropdown
                 columns={this.state.columns}
@@ -84,7 +83,9 @@ export default class TableContainer extends React.Component<Props, { columns: Co
               data={data}
               height={height - 38}
               width={width}
+              headerHeight={this.props.headerHeight || 30}
               rowHeight={this.props.rowHeight || 30}
+              rowStyle={this.props.rowStyle || {}}
             />
           </Container>
         )}

@@ -7,8 +7,10 @@ import {
   changeUseImages,
   changeColumnWidth,
   changeColumnVisibility,
-  resetToDefault,
-  updateTableRowHeight
+  changeRowFontSize,
+  changeTableHeaderHeight,
+  changeTableRowHeight,
+  resetToDefault
 } from './actions/config';
 
 interface Props {
@@ -19,7 +21,9 @@ interface Props {
   changeUseImages: (useImages: boolean) => any;
   changeColumnVisibility: (index: number, show: boolean) => any;
   changeColumnWidth: (index: number, width: number) => any;
-  updateTableRowHeight: (height: number) => any;
+  changeRowFontSize: (size: number) => any;
+  changeTableHeaderHeight: (height: number) => any;
+  changeTableRowHeight: (height: number) => any;
   resetToDefault: () => any;
 }
 
@@ -31,8 +35,10 @@ const mapDispatchToProps = {
   changeUseImages,
   changeColumnVisibility,
   changeColumnWidth,
-  resetToDefault,
-  updateTableRowHeight
+  changeRowFontSize,
+  changeTableRowHeight,
+  changeTableHeaderHeight,
+  resetToDefault
 };
 
 const saveToLocalStorage = (props => {
@@ -74,13 +80,35 @@ const ConfigModal = (props: Props) => (
           <Form.Input
             type="number"
             onChange={
-              (e: React.FormEvent<HTMLInputElement>) => props.updateTableRowHeight(parseInt(e.currentTarget.value))
+              (e: React.FormEvent<HTMLInputElement>) => props.changeRowFontSize(parseInt(e.currentTarget.value))
+            }
+            min={4}
+            max={72}
+            step={2}
+            value={props.table.rowStyle.fontSize}
+            label="Font Size (px)"
+          />
+          <Form.Input
+            type="number"
+            onChange={
+              (e: React.FormEvent<HTMLInputElement>) => props.changeTableRowHeight(parseInt(e.currentTarget.value))
             }
             min={10}
             max={120}
             step={10}
             value={props.table.rowHeight}
-            label="Row Height (px)"
+            label="Table Row Height (px)"
+          />
+          <Form.Input
+            type="number"
+            onChange={
+              (e: React.FormEvent<HTMLInputElement>) => props.changeTableHeaderHeight(parseInt(e.currentTarget.value))
+            }
+            min={10}
+            max={120}
+            step={10}
+            value={props.table.headerHeight}
+            label="Header Row Height (px)"
           />
         </Form.Group>
         <Form.Group inline={true}>

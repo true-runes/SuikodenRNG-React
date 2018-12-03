@@ -31,11 +31,9 @@ export default class Filter extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: any) {
     if (!arraysEqual(this.props.data, prevProps.data)) {
-      console.log('Data changed');
       this.state.searchApi._search._worker.terminate();
       this.setState({ searchApi: new SearchApi({ tokenizePattern: /,/ }) }, () => {
         this.indexData(this.props.data);
-        console.log('Calling filter');
         this.filter();
       });
     }
@@ -69,10 +67,9 @@ export default class Filter extends React.Component<Props, State> {
         placeholder="Filter"
         loading={this.state.filtering}
         type="text"
-        onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          console.log('Input changed');
-          this.setState({ filter: e.currentTarget.value }, () => this.filter());
-        }}
+        onChange={(e: React.FormEvent<HTMLInputElement>) =>
+          this.setState({ filter: e.currentTarget.value }, () => this.filter())
+        }
         value={this.state.filter}
       />
     );

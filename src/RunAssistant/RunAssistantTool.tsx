@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 import { Divider } from 'semantic-ui-react';
 import AreaClass from '../lib/Area';
 import RNG from '../lib/rng';
 import { Fight } from '../lib/interfaces';
 import { ConnectedTable as Table } from './Table';
 import ConnectedControls from './Controls';
-import { createStore, applyMiddleware } from 'redux';
 import reducer from './reducers';
-import { createLogger } from 'redux-logger';
+import { initialState as configDefault } from './reducers/config';
 
 const logger = createLogger({});
 
@@ -37,7 +38,18 @@ class RunAssistantTool extends React.Component<Props, { store: any }> {
       : 0;
 
     let config = window.localStorage.getItem('config');
-    config = config === null ? undefined : JSON.parse(config);
+    config = config === null ? configDefault : {
+      ...configDefault,
+      ...JSON.parse(config),
+      table: {
+        ...configDefault.table,
+        ...JSON.parse(config).table,
+        rowStyle: {
+          ...configDefault.table.rowStyle,
+          ...JSON.parse(config).table.rowStyle
+        }
+      }
+    };
 
     const initialState = {
       RunAssistant: {
