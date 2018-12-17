@@ -40,7 +40,8 @@ export default handleActions(
       }
 
       // Then increment index until rng is 1 higher than current
-      while (state.fightsList[currentArea][index].index < rngIndex) {
+      while (state.fightsList[currentArea][index].index < rngIndex
+        && index < state.fightsList[currentArea].length - 1) {
         index++;
       }
 

@@ -30,9 +30,9 @@ export default class TableContainer extends React.Component<Props, { columns: Co
     };
   }
 
-  componentWillReceiveProps(prevProps: Props) {
-    if (prevProps.data !== this.props.data) {
-      this.setState({ rowsToRender: createDefaultRowsToRender(this.props.data) });
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.data.length !== nextProps.data.length) {
+      this.setState({ rowsToRender: createDefaultRowsToRender(nextProps.data)});
     }
   }
 
@@ -81,6 +81,7 @@ export default class TableContainer extends React.Component<Props, { columns: Co
             </div>
             <Table
               {...this.props}
+              currentRow={this.props.currentRow}
               columns={this.state.columns}
               data={data}
               height={height - 38}
