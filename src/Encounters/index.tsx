@@ -14,6 +14,7 @@ interface State {
   rng: string;
   iterations: number;
   partylevel: number;
+  realistic: boolean;
   areas: string | string[];
 }
 
@@ -22,14 +23,12 @@ class EncountersContainer extends React.Component<Props, State> {
     rng: numToHexString(0x12),
     iterations: 1000,
     partylevel: 0,
+    realistic: true,
     areas: [],
   };
 
-  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const target = event.currentTarget;
-    const name: string = target.name;
-    const value: string = target.value;
-    this.setState(prevState => ({ ...prevState, [name]: value }));
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>, { checked, name, value }) => {
+    this.setState(prevState => ({ ...prevState, [name]: checked || value }));
   }
 
   handleAreaChange = (e: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
@@ -82,6 +81,12 @@ class EncountersContainer extends React.Component<Props, State> {
             multiple={true}
             search={true}
             selection={true}
+          />
+          <Form.Checkbox
+            label="Realistic Mode"
+            name="realistic"
+            checked={this.state.realistic}
+            onChange={this.handleInputChange}
           />
           <Form.Button type="submit" content="Generate Encounters" primary={true}/>
         </Form>

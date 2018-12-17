@@ -50,9 +50,13 @@ const EnemyButtonContainer = (props: Props) => {
       new Array(6))
     .reduce(
       (arr, enemyGroup) => {
-        if (enemyGroup !== undefined) {
-          arr.push(enemyGroup);
+        if (enemyGroup === undefined) {
+          return arr;
         }
+        if (enemyGroup.length > 1) {
+          enemyGroup.sort((a, b) => a.name < b.name ? -1 : 1);
+        }
+        arr.push(enemyGroup);
         return arr;
       },
       []);

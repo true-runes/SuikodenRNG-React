@@ -15,11 +15,8 @@ class NPCalcForm extends React.Component<RouteComponentProps<any>, State> {
     npcs: 1
   };
 
-  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const target = event.currentTarget;
-    const name: string = target.name;
-    const value: string = target.value;
-    this.setState(prevState => ({ ...prevState, [name]: value }));
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>, { checked, name, value }) => {
+    this.setState(prevState => ({ ...prevState, [name]: checked || value }));
   }
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

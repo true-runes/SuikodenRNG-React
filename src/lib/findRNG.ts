@@ -73,7 +73,7 @@ export function boyerMoore(input: number[], pattern: number[], max: number): num
       }
     }
     const badCharVal = badChar[input[inputIndex]];
-    const jump = badCharVal === -1 ? maxOffset : badCharVal || 1;
+    const jump = badCharVal === -1 ? maxOffset : badCharVal;
     i += jump;
   }
   return null;

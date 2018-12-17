@@ -94,7 +94,7 @@ export default handleActions(
       const currentArea = getCurrentArea(state);
       const encounterTableIndex = getEnemyGroupEncounterIndex(action.name, currentArea.enemies);
       const pattern = state.pattern.concat([encounterTableIndex]);
-      const searchStartIndex = Math.max(0, state.index - pattern.length);
+      const searchStartIndex = Math.max(0, state.index - pattern.length + 2);
       const fights = getCurrentFights(state)
         .map(fight => (getEnemyGroupEncounterIndex(fight.enemyGroup.name, currentArea.enemies)))
         .slice(searchStartIndex);

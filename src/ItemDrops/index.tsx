@@ -25,11 +25,8 @@ class ItemDropsForm extends React.Component<Props, State> {
     enemyGroup: 0,
   };
 
-  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const target = event.currentTarget;
-    const name: string = target.name;
-    const value: string = target.value;
-    this.setState(prevState => ({ ...prevState, [name]: value }));
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>, { checked, name, value }) => {
+    this.setState(prevState => ({ ...prevState, [name]: checked || value }));
   }
 
   handleAreaChange = (e: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {

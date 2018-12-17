@@ -29,9 +29,10 @@ class EncountersGenerator extends React.Component<Props, State> {
     const areas: AreaClass[] = params.get('areas')!.split(',').map((name) => {
       return this.props.areas[name];
     });
+    const realistic: boolean = params.get('realistic') === 'true';
 
     const encounters = areas
-      .map(area => area.generateEncounters(new RNG(rng), iterations, partylevel))
+      .map(area => area.generateEncounters(new RNG(rng), iterations, partylevel, realistic))
       .reduce(
         (fights: any[], areaFights) => {
           return fights.concat(areaFights);

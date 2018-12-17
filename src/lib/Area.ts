@@ -65,12 +65,12 @@ export default class AreaClass {
         if (!(partylevel > 0 && partylevel > fight.enemyGroup.champVal)) {
           encounters.push(fight);
         }
+        if (realistic) {
+          rng.next();
+          i++;
+        }
       }
       rng.next();
-      if (realistic) {
-        rng.next();
-        i++;
-      }
     }
     return encounters;
   }
