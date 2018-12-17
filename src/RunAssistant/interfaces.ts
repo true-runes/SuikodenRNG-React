@@ -1,8 +1,10 @@
 import { EnemyGroupData, Fight } from '../lib/interfaces';
-import { Column } from '../Table/interfaces';
+import { Column, RowStyle } from '../Table/interfaces';
 
 export interface TableConfig {
   rowHeight: number;
+  headerHeight: number;
+  rowStyle: RowStyle;
 }
 
 export interface RunAssistState {

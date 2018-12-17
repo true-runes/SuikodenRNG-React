@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Column } from './interfaces';
+import { Column, RowStyle } from './interfaces';
 import { Column as VirtColumn, Table as VirtTable } from 'react-virtualized';
 
 interface Props {
@@ -7,10 +7,16 @@ interface Props {
   columns: Column[];
   height: number;
   width: number;
+  headerHeight: number;
   rowHeight: number;
+  rowStyle?: RowStyle;
   currentRow?: number;
   onRowClick?: (index: number) => any;
 }
+
+const defaultRowStyle = {
+  lineHeight: 1
+};
 
 const Table = (props: Props) => {
   const columns: Column[] = props.columns.reduce(
@@ -25,9 +31,10 @@ const Table = (props: Props) => {
     []);
   const columnsWidthRatio: number = props.width /
     columns.reduce((total, column) => (total += column.width), 0);
+  const rowStyle = props.rowStyle ? { ...defaultRowStyle, ...props.rowStyle } : defaultRowStyle;
   return (
     <VirtTable
-      headerHeight={30}
+      headerHeight={props.headerHeight}
       height={props.height}
       onRowClick={({ index }) => {
         if (props.onRowClick) {
@@ -38,8 +45,8 @@ const Table = (props: Props) => {
       rowGetter={({ index }) => props.data[index]}
       rowHeight={props.rowHeight}
       rowStyle={({ index }) => (props.currentRow !== undefined && props.currentRow === index
-        ? { backgroundColor: 'yellow' }
-        : {})}
+        ? { ...rowStyle, backgroundColor: 'yellow' }
+        : rowStyle)}
       scrollToIndex={props.currentRow}
       scrollToAlignment="start"
       width={props.width}

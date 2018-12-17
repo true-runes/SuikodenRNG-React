@@ -4,3 +4,9 @@ export interface Column {
   width: number;
   show?: boolean;
 }
+
+export interface RowStyle {
+  fontSize?: number;
+  color?: string;
+  backgroundColor?: string;
+}

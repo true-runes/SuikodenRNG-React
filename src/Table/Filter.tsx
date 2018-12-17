@@ -67,10 +67,9 @@ export default class Filter extends React.Component<Props, State> {
         placeholder="Filter"
         loading={this.state.filtering}
         type="text"
-        onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          console.log('Input changed');
-          this.setState({ filter: e.currentTarget.value }, () => this.filter());
-        }}
+        onChange={(e: React.FormEvent<HTMLInputElement>) =>
+          this.setState({ filter: e.currentTarget.value }, () => this.filter())
+        }
         value={this.state.filter}
       />
     );

@@ -14,14 +14,18 @@ interface Props {
   currentRow: number;
   selectFight: (index: number) => any;
   columns: Column[];
+  headerHeight: number;
   rowHeight: number;
+  rowStyle: any;
 }
 
 const mapStateToProps = (state: ReducerState) => ({
   fights: getCurrentFights(state.RunAssistant),
   currentRow: state.RunAssistant.index,
   columns: state.config.columns,
-  rowHeight: state.config.table.rowHeight
+  headerHeight: state.config.table.headerHeight,
+  rowHeight: state.config.table.rowHeight,
+  rowStyle: { ...state.config.table.rowStyle, fontSize: `${state.config.table.rowStyle.fontSize}px` }
 });
 
 const mapDispatchToProps = {
@@ -55,8 +59,10 @@ const RunAssistantTable = (props: Props) => {
         data={fights}
         filter={true}
         filterFromData={['enemyGroupImage']}
+        headerHeight={props.headerHeight}
         onRowClick={(index: number) => props.selectFight(index)}
         rowHeight={props.rowHeight}
+        rowStyle={props.rowStyle}
       />
     </Container>
   );

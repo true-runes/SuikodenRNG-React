@@ -15,11 +15,21 @@ export const changeColumnWidth = (index: number, width: number) => ({
   width
 });
 
-export const updateTableRowHeight = (height: number) => ({
-  type: 'UPDATE_TABLE_ROW_HEIGHT',
+export const changeTableRowHeight = (height: number) => ({
+  type: 'CHANGE_TABLE_ROW_HEIGHT',
+  height
+});
+
+export const changeTableHeaderHeight = (height: number) => ({
+  type: 'CHANGE_TABLE_HEADER_HEIGHT',
   height
 });
 
 export const resetToDefault = () => ({
   type: 'RESET_TO_DEFAULT'
+});
+
+export const changeRowFontSize = (size: number) => ({
+  type: 'CHANGE_ROW_FONT_SIZE',
+  size: size
 });

@@ -13,10 +13,16 @@ const columns: Column[] = [
   { label: 'Wheel Attempts', key: 'wheel', width: 150, show: true }
 ];
 
-const initialState: State = {
+export const initialState: State = {
   useImages: false,
   columns,
-  table: { rowHeight: 30 }
+  table: {
+    rowHeight: 30,
+    headerHeight: 30,
+    rowStyle: {
+      fontSize: 16
+    }
+  }
 };
 
 export default handleActions(
@@ -35,8 +41,22 @@ export default handleActions(
         })
       }
     ),
-    UPDATE_TABLE_ROW_HEIGHT: (state: State, action) => (
+    CHANGE_TABLE_ROW_HEIGHT: (state: State, action) => (
       { ...state, table: { ...state.table, rowHeight: action.height } }
+    ),
+    CHANGE_TABLE_HEADER_HEIGHT: (state: State, action) => (
+      { ...state, table: { ...state.table, headerHeight: action.height } }
+    ),
+    CHANGE_ROW_FONT_SIZE: (state: State, action) => (
+      { ...state,
+        table: {
+          ...state.table,
+          rowStyle: {
+            ...state.table.rowStyle,
+            fontSize: action.size
+          }
+        }
+      }
     ),
     RESET_TO_DEFAULT: (state: State, action) => initialState
   },
