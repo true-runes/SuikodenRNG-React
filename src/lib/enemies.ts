@@ -500,10 +500,15 @@ export const enemies = {
     },
     "areaType": "Dungeon"
   },
-  "Gradys Mansion": {
+  "Grady's Mansion": {
     "name": "Grady's Mansion",
     "encounterRate": 0,
-    "encounters": [],
+    "encounters": [
+      { "name": "2 Empire Soldier",
+        "parseString": "2 EmpireSoldierSword" },
+      { "name": "5 Empire Soldier 1 Empire Captain",
+        "parseString": "3 EmpireSoldierSpear 2 EmpireSoldierBow 1 EmpireCaptain" }
+    ],
     "enemies": {
       "EmpireCaptain": {
         "bits": 250,
@@ -532,7 +537,7 @@ export const enemies = {
           "lvl": 10
         }
       },
-      "EmpireSoldier(sabre#1)": {
+      "EmpireSoldierSword": {
         "bits": 140,
         "drops": [
           {
@@ -551,7 +556,7 @@ export const enemies = {
           "lvl": 8
         }
       },
-      "EmpireSoldier(bow#1)": {
+      "EmpireSoldierBow": {
         "bits": 130,
         "drops": [],
         "stats": {
@@ -565,7 +570,7 @@ export const enemies = {
           "lvl": 8
         }
       },
-      "EmpireSoldier(spear#1)": {
+      "EmpireSoldierSpear": {
         "bits": 100,
         "drops": [],
         "stats": {
