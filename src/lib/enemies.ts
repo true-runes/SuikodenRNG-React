@@ -833,7 +833,7 @@ export const enemies = {
   },
   "Gregminster Area 2": {
     "name": "Gregminster Area 2",
-    "encounterRate": 2,
+    "encounterRate": 8,
     "encounters": [
       { "name": "3 Ninja Master 1 Simurgh",
         "parseString": "3 NinjaMaster 1 Simurgh" },
