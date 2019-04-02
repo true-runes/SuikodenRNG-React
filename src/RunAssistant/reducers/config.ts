@@ -10,7 +10,8 @@ const columns: Column[] = [
   { label: 'Run', key: 'run', width: 100, show: true },
   { label: 'Encounter RNG', key: 'startRNG', width: 150, show: false },
   { label: 'Battle RNG', key: 'battleRNG', width: 150, show: true },
-  { label: 'Wheel Attempts', key: 'wheel', width: 150, show: true }
+  { label: 'Wheel Attempts', key: 'wheel', width: 150, show: true },
+  { label: 'Champion Value', key: 'champVal', width: 150, show: false }
 ];
 
 export const initialState: State = {

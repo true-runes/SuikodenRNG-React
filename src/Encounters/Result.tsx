@@ -46,7 +46,8 @@ class EncountersGenerator extends React.Component<Props, State> {
           run: fight.run ? 'Run' : 'Fail',
           startRNG: numToHexString(fight.startRNG),
           battleRNG: numToHexString(fight.battleRNG),
-          wheel: fight.wheel
+          wheel: fight.wheel,
+          champVal: fight.enemyGroup.champVal
         };
       })
       .sort((a, b) => {

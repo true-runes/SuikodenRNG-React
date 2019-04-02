@@ -34,6 +34,7 @@ const mapDispatchToProps = {
 
 const RunAssistantTable = (props: Props) => {
   const columns: Column[] =  props.columns;
+  console.log(columns);
   const fights = props.fights.map(fight => ({
       ...fight,
       enemyGroup: fight.enemyGroup.name,
@@ -48,7 +49,8 @@ const RunAssistantTable = (props: Props) => {
       ),
       run: fight.run ? 'Run' : 'Fail',
       startRNG: numToHexString(fight.startRNG),
-      battleRNG: numToHexString(fight.battleRNG)
+      battleRNG: numToHexString(fight.battleRNG),
+      champVal: fight.enemyGroup.champVal
   }));
 
   return (
